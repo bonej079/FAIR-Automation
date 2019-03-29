@@ -1,0 +1,20 @@
+{% extends 'layouts/base.html' %}
+{% load socialaccount %}
+{% load static %}
+{% load mathfilters %}
+
+{% block content %}
+<div class="container mb-4">
+    <img src="{% static 'imgs/' %}private.png" width=200 height=200>
+    <h2>{{tool.tool_name}}</h2>
+    <br>
+    <p class="text-info">This is a private tool added by you, {{request.user.username}}. As such, a FAIR score cannot be calculated as it cannot be found or accessed by other users.</p>
+    
+    <div class="row border">
+        <div class="col-4 border-right mt-1 mb-1">Description</div>
+        <div class="border-right-0 col mt-1 mb-1">{{tool.privateDesc}}</div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'layouts/base.html' %}
+{% load socialaccount %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h4>Hi {{user.username}}, these are your current pipelines: </h4>
+    <div class="row border border-primary">
+            <div class="col-4 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">Pipeline Name</div>
+            <div class="col-2 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">Findability</div>
+            <div class="col-2 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">Accessibility</div>
+            <div class="col-2 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">Interoperability</div>
+            <div class="col-2 border-right border-primary text-center border-right-0" style="padding-bottom:3px; padding-top:2px;">Reusability</div>
+        </div>
+    {% for pipeline in pipelines %}
+        <div class="row border">
+            <div class="col-4 border-right" style="padding-top:5px;padding-bottom:5px;"><a href="details/{{pipeline.id}}">{{pipeline.name}}</a></div>
+            {% if pipeline.findability is not null %}
+                <div class="col-2 border-right score mt-1 mb-1" style="padding-bottom:3px;padding-top:2px" score="{{pipeline.findability}}" id="findability">{{pipeline.findability}}%</div>
+            {% else %}
+            <div class="col-2 border-right score mt-1 mb-1" style="padding-bottom:3px;padding-top:2px" score="{{pipeline.findability}}" id="findability"></div>
+            {% endif %}
+
+            {% if pipeline.accessibility is not null %}
+                <div class="col-2 border-right score mt-1 mb-1" style="padding-bottom:3px;padding-top:2px" score="{{pipeline.accessibility}}" id="accessibility">{{pipeline.accessibility}}%</div>
+            {% else %}
+                <div class="col-2 border-right score mt-1 mb-1" style="padding-bottom:3px;padding-top:2px" score="{{pipeline.findability}}" id="findability"></div>
+            {% endif %}
+
+            {% if pipeline.interoperability is not null %}
+                <div class="col-2 border-right score mt-1 mb-1" style="padding-bottom:3px;padding-top:2px" score="{{pipeline.interoperability}}" id="interoperability">{{pipeline.interoperability}}%</div>
+            {% else %}
+                <div class="col-2 border-right score mt-1 mb-1" style="padding-bottom:3px;padding-top:2px" score="{{pipeline.findability}}" id="findability"></div>
+            {% endif %}
+
+            {% if pipeline.reusability is not null %}
+                <div class="col-2 border-right score border-right-0 mt-1 mb-1" style="padding-bottom:3px;padding-top:2px" score="{{pipeline.reusability}}" id="reusability">{{pipeline.reusability}}%</div>
+            {% else %}
+                <div class="col-2 border-right score mt-1 mb-1" style="padding-bottom:3px;padding-top:2px" score="{{pipeline.findability}}" id="findability"></div>
+            {% endif %}
+            
+        </div>
+    {% endfor %}
+    <a href="/portal/pipelines/create">Create new pipeline</a>
+</div>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script>
+    $('.score').each(function(){
+        var value = $(this).attr('score');
+        console.log(value);
+        var hue=((0+(value/100))*120).toString(10);
+        this.style.backgroundColor = ["hsl(",hue,",100%,50%)"].join("");
+    });
+    
+    </script>
+{% endblock %}

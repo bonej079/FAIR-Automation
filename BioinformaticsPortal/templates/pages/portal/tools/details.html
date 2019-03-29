@@ -1,0 +1,192 @@
+{% extends 'layouts/base.html' %}
+{% load socialaccount %}
+{% load static %}
+{% load mathfilters %}
+
+{% block content %}
+<div class="container mb-4">
+    <img src="{% static 'imgs/' %}{{tool.tool_name}}.png" width=200 height=200>
+    <h2>{{tool.tool_name}}</h2>
+    <br>
+
+    <div class="row border">
+        <div class="col-11 border-right mt-1 mb-1"> 
+            <h4>Findability</h4>
+        </div>
+        <div class="score col-1 mt-1 mb-1 text-center" score={{fair.findability}} style="padding-right:2px;padding-left:2px">
+            {{fair.findability}}%
+        </div>
+    </div>
+    <div class="row border">
+        <div class="col-4 border-right mt-1 mb-1">Download Link</div>
+        {% if findability.free_down == 0 %}
+            <div class="border-right col-7 mt-1 mb-1 text-info">{{downlink}} Findability could be improved if a download link was provided.</div>
+        {% else %}
+            <div class="border-right col-7 mt-1 mb-1"><a href="{{findability.downlink}}">Link provided on website.</a></div>
+        {% endif %}
+        <div class="col-1 mt-1 mb-1 text-center">{{findability.free_down|mul:5}}%</div>
+    </div>
+    <div class="row border">
+        <div class="col-4 border-right mt-1 mb-1">DOI</div>
+        {% if findability.doi == 0 %}
+            <div class="border-right col-7 text-info mt-1 mb-1">No DOI found. Findability could be improved if a DOI to the paper that presented the tool was provided.</div>
+        {% else %}
+            <div class="border-right col-7 mt-1 mb-1"><a href="{{findability.doiLink}}">{{findability.doiLink}}</a></div>
+        {% endif %}
+        <div class="col-1 mt-1 mb-1 text-center">{{findability.doi|mul:5}}%</div>
+    </div>
+    <div class="row border">
+        <div class="col-4 border-right mt-1 mb-1">Description</div>
+        {% if findability.description == 0 %}
+            <div class="border-right col-7 text-info mt-1 mb-1">No description found. Findability could be improved if a description was given.</div>
+        {% else %}
+            <div class="border-right col-7 mt-1 mb-1">{{findability.descText}}</div>
+        {% endif %}
+        <div class="col-1 mt-1 mb-1 text-center">{{findability.description|mul:5}}%</div>
+    </div>
+    <div class="row border">
+        <div class="col-4 border-right mt-1 mb-1">Older Versions</div>
+        {% if findability.versions == 0 %}
+            <div class="border-right col-7 mt-1 mb-1 text-info">Previous versions of tool unavailable. Findability could be improved if previous versions of tool were made available.</div>
+        {% else %}
+            <div class="border-right col-7 mt-1 mb-1">Previous versions of tool available.</div>
+        {% endif %}
+        <div class="col-1 mt-1 mb-1 text-center">{{findability.versions|mul:5}}%</div>
+    </div>
+    <a href="/portal/refine/findability/{{tool.id}}">Refine Findability</a>
+
+    <br><br>
+
+    <div class="row border">
+        <div class="col-11 border-right mt-1 mb-1"> 
+            <h4>Accessibility</h4>
+        </div>
+        <div class="score col-1 mt-1 mb-1 text-center" score={{fair.accessibility}} style="padding-right:2px;padding-left:2px">
+            {{fair.accessibility}}%
+        </div>
+    </div>
+    <div class="row border">
+        <div class="col-4 border-right mt-1 mb-1">API availability</div>
+        {% if accessibility.api == 0 %}
+            <div class="border-right col-7 text-info mt-1 mb-1">Tool does not support API usage. Accessibility could be improved if tool supported API usage.</div>
+        {% else %}
+            <div class="border-right col-7 mt-1 mb-1">Tool supports API usage.</div>
+        {% endif %}
+        <div class="col-1 mt-1 mb-1 text-center">{{accessibility.api|mul:20}}%</div>
+    </div>
+    <a href="/portal/refine/accessibility/{{tool.id}}">Refine Accessibilitiy</a>
+
+    <br><br>
+
+    <div class="row border">
+        <div class="col-11 border-right mt-1 mb-1"> 
+            <h4>Interoperability</h4>
+        </div>
+        <div class="score col-1 mt-1 mb-1 text-center" score={{fair.interoperability}} style="padding-right:2px;padding-left:2px">
+            {{fair.interoperability}}%
+        </div>
+    </div>
+    <div class="row border">
+        <div class="col-4 border-right mt-1 mb-1">Windows Compatibility</div>
+        {% if interoperability.winComp == 0 %}
+            <div class="border-right col-7 text-info mt-1 mb-1">Tool not supported on Windows OS, or information about support was not provided. Interoperability could be improved if tool supported Windows OS.</div>
+        {% else %}
+            <div class="border-right col-7 mt-1 mb-1">Tool supported on Windows OS.</div>
+        {% endif %}
+        <div class="col-1 mt-1 mb-1 text-center">{{interoperability.winComp|mul:33.3}}%</div>
+    </div>
+    <div class="row border">
+        <div class="col-4 border-right mt-1 mb-1">MacOS Compatibility</div>
+        {% if interoperability.macComp == 0 %}
+            <div class="border-right col-7 text-info mt-1 mb-1">Tool not supported on MacOS, or information about support was not provided. Interoperability could be improved if tool supported MacOS.</div>
+        {% else %}
+            <div class="border-right col-7 mt-1 mb-1">Tool supported on MacOS.</div>
+        {% endif %}
+        <div class="col-1 mt-1 mb-1 text-center">{{interoperability.macComp|mul:33.3}}%</div>
+    </div>
+    <div class="row border">
+        <div class="col-4 border-right mt-1 mb-1">UNIX Compatibility</div>
+        {% if interoperability.unixComp == 0 %}
+            <div class="border-right col-7 text-info mt-1 mb-1">Tool not supported on UNIX, or information about support was not provided. Interoperability could be improved if tool supported UNIX.</div>
+        {% else %}
+            <div class="border-right col-7 mt-1 mb-1">Tool supported on UNIX.</div>
+        {% endif %}
+        <div class="col-1 mt-1 mb-1 text-center">{{interoperability.unixComp|mul:33.3}}%</div>
+    </div>
+    <a href="/portal/refine/interoperability/{{tool.id}}">Refine Interoperability</a>
+    
+    <br><br>
+
+    <div class="row border">
+        <div class="col-11 border-right mt-1 mb-1"> 
+            <h4>Reusability</h4>
+        </div>
+        <div class="score col-1 mt-1 mb-1 text-center" score={{fair.reusability}} style="padding-right:2px;padding-left:2px">
+            {{fair.reusability}}%
+        </div>
+    </div>
+    <div class="row border">
+        <div class="col-4 border-right mt-1 mb-1">Public Repository</div>
+        {% if reusability.public_repo == 0 %}
+            <div class="border-right col-7 text-info mt-1 mb-1">{{reusability.repositoryLink}} Reusability could be improved if a public repository was provided.</div>
+        {% else %}
+            <div class="border-right col-7 mt-1 mb-1"><a href="{{reusability.repositoryLink}}">Link provided on website.</a></div>
+        {% endif %}
+        <div class="col-1 mt-1 mb-1 text-center">{{reusability.public_repo|mul:5}}%</div>
+    </div>
+    
+    <div class="row border">
+        <div class="col-4 border-right mt-1 mb-1">Ontologies</div>
+    {% if reusability.usesOnt %}
+        {% if reusability.ontology == 0 %}
+            <div class="border-right col-7 text-info mt-1 mb-1">{{reusability.ontUsed}} Reusability could be improved if ontologies used (if any) were provided.</div>
+        {% else %}
+            <div class="border-right col-7 mt-1 mb-1">{{reusability.ontUsed}}</a></div>
+        {% endif %}
+        <div class="col-1 mt-1 mb-1 text-center">{{reusability.ontology|mul:5}}%</div>
+    {% else %}
+        <div class="border-right col-7 text-info mt-1 mb-1">This tool does not use an ontology, as such this metric does not affect the score.</div>
+        <div class="col-1 mt-1 mb-1 text-center">N/A</div>
+    {% endif %}
+    </div>
+    <div class="row border">
+        <div class="col-4 border-right mt-1 mb-1">Documentation</div>
+        {% if reusability.documentation == 0 %}
+            <div class="border-right col-7 text-info mt-1 mb-1">No documentation found. Reusability could be improved if documentation was provided.</div>
+        {% else %}
+            <div class="border-right col-7 mt-1 mb-1">Documentation provided on website.</div>
+        {% endif %}
+        <div class="col-1 mt-1 mb-1 text-center">{{reusability.documentation|mul:5}}%</div>
+    </div>
+    <div class="row border">
+        <div class="col-4 border-right mt-1 mb-1">Contact Information</div>
+        {% if reusability.contact == 0 %}
+            <div class="border-right col-7 text-info mt-1 mb-1">No contact information found. Reusability could be improved if developer's contact information was provided.</div>
+        {% else %}
+            <div class="border-right col-7 mt-1 mb-1">Contact information provided on website.</div>
+        {% endif %}
+        <div class="col-1 mt-1 mb-1 text-center">{{reusability.contact|mul:5}}%</div>
+    </div>
+    <div class="row border">
+        <div class="col-4 border-right mt-1 mb-1">Citation Information</div>
+        {% if reusability.citation == 0 %}
+            <div class="border-right col-7 text-info mt-1 mb-1">No information provided on how to cite tool. Reusability could be improved if information on how to cite tool was provided.</div>
+        {% else %}
+            <div class="border-right col-7 mt-1 mb-1">Citation information information provided on website.</div>
+        {% endif %}
+        <div class="col-1 mt-1 mb-1 text-center">{{reusability.citation|mul:5}}%</div>
+    </div>
+    <a href="">Refine Reusability</a>
+</div>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script>
+    $('.score').each(function(){
+        var value = $(this).attr('score');
+        console.log(value);
+        var hue=((0+(value/100))*120).toString(10);
+        this.style.backgroundColor = ["hsl(",hue,",100%,50%)"].join("");
+    });
+    
+    </script>
+{% endblock %}

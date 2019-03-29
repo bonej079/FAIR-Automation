@@ -1,0 +1,15 @@
+{% extends 'layouts/base.html' %}
+{% load socialaccount %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+            <p>What would you like to call your new pipeline?</p>
+            <form method=POST>{% csrf_token %}
+                <input type=text name=name>
+                <br>
+                <br>
+                <input class="btn btn-outline-primary rounded-0" type=submit value=Submit>
+            </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'layouts/base.html' %}
+{% load socialaccount %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>{{tool.tool.tool_name}} - Interoperability</h2>
+    <br>
+    <form action="/portal/tools/details/{{tool.tool_id}}" method="POST">{% csrf_token %}
+        <input type=hidden name="scope" value="interoperability">
+        <div class="row mb-3">
+            <div class="col-2">
+                <p>Windows Support</p>
+            </div>
+            <div class="col">
+            {% if interoperability.winComp == 0 %}
+                <input type="radio" name="win" value="1"> Tool supported on Windows.<br>
+                <input type="radio" name="win" value="0" checked> Tool not supported on Windows.<br>
+            {% else %}
+                <input type="radio" name="win" value="1" checked> Tool supported on Windows.<br>
+                <input type="radio" name="win" value="0"> Tool not supported on Windows.<br>
+            {% endif %}
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2">
+                <p>MAC Support</p>
+            </div>
+            <div class="col">
+            {% if interoperability.macComp == 0 %}
+                <input type="radio" name="mac" value="1"> Tool supported on MAC OS.<br>
+                <input type="radio" name="mac" value="0" checked> Tool not supported on MAC OS.<br>
+            {% else %}
+                <input type="radio" name="mac" value="1" checked> Tool supported on MAC OS.<br>
+                <input type="radio" name="mac" value="0"> Tool not supported on MAC OS.<br>
+            {% endif %}
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2">
+                <p>UNIX Support</p>
+            </div>
+            <div class="col">
+            {% if interoperability.unixComp == 0 %}
+                <input type="radio" name="unix" value="1"> Tool supported on UNIX.<br>
+                <input type="radio" name="unix" value="0" checked> Tool not supported on UNIX.<br>
+            {% else %}
+                <input type="radio" name="unix" value="1" checked> Tool supported on UNIX.<br>
+                <input type="radio" name="unix" value="0"> Tool not supported on UNIX.<br>
+            {% endif %}
+            </div>
+        </div>
+            
+            
+        <input class="btn btn-outline-primary rounded-0" type="submit" value="Update">
+    </form>
+</div>
+
+{% endblock %}

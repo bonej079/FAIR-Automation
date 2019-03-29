@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+certifi = "==2018.4.16"
+mysqlclient = "*"
+pipenv = "==2018.7.1"
+pytz = "==2018.5"
+virtualenv = "==16.0.0"
+virtualenv-clone = "==0.3.0"
+Django = "==2.1"
+django-libsass = "*"
+virtualenvwrapper = "*"
+django-compressor = "*"
+django-allauth = "*"
+
+[dev-packages]
+"prospector" = "*"
+
+[requires]
+python_version = "3.7"

@@ -1,0 +1,43 @@
+{% extends 'layouts/base.html' %}
+{% load socialaccount %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1>{{tools.0.pipeline.name}}</h1>
+    <form action="/portal/pipelines/" method="POST">{% csrf_token %}
+        <input type="hidden" value={{tools.0.pipeline.id}} name="pipeline_id">
+    {% for tool in tools %}
+    <div class="btn-group">
+        <a class="dropdown" data-toggle="dropdown"><button type="button" class="dropdown-toggle btn btn-outline-primary rounded-0">{{tool.tool}}</button></a> ->
+        <div class="dropdown-menu" >
+                {% if tool.tool.isPrivate is False %}
+                    <a class="col btn btn-outline-primary rounded-0 border-0" href="/portal/tools/details/{{tool.tool.id}}">View Details</a>
+                {% else %}
+                    <a class="col btn btn-outline-primary rounded-0 border-0" href="/portal/tools/private/{{tool.tool.id}}">View Details</a>
+                {% endif %}
+                <a class="col btn btn-outline-primary rounded-0 border-0" href="/portal/tools/details/{{tool.tool.id}}">Add tool before</a>
+                <a class="col btn btn-outline-primary rounded-0 border-0" href="/portal/tools/details/{{tool.tool.id}}">Add tool after</a>
+                <a class="col btn btn-outline-primary rounded-0 border-0" href="/portal/tools/details/{{tool.tool.id}}">Add dataset before</a>
+                <a class="col btn btn-outline-primary rounded-0 border-0" href="/portal/tools/details/{{tool.tool.id}}">Add dataset after</a>
+                <input class="btn btn-outline-primary rounded-0 border-0" type="submit" name="{{tool.tool.id}}" value="Remove from pipeline">
+            </div>
+        </div>
+    {% endfor %}
+    Output
+
+    
+
+    </form>
+</div>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script>
+    $('div.btn-group a.dropdown').hover(function() {
+  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+}, function() {
+  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+});
+</script>
+
+{% endblock %}

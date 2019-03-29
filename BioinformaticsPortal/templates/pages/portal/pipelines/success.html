@@ -1,0 +1,10 @@
+{% extends 'layouts/base.html' %}
+{% load socialaccount %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+            <p>Pipeline "{{name}}" created successfully.</p>
+            <a href="/portal/pipelines/"><button class="btn btn-outline-primary rounded-0">Back</button></a>
+    </div>
+{% endblock %}

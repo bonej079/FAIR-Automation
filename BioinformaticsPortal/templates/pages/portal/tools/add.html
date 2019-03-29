@@ -1,0 +1,23 @@
+{% extends 'layouts/base.html' %}
+{% load socialaccount %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>Please select pipeline you would like to add this tool to.</h2>
+    <h4>{{user.username}}, these are your current pipelines:</h4> 
+    <br>
+    <form action="{% url 'tools' %}" method="post">{% csrf_token %}
+        <input type=hidden name="tool_id" value="{{tool.id}}">
+
+    {% for pipeline in pipelines %}
+        <div class="row border">
+            <div class="col-9 border-right" style="padding-top:2px;padding-bottom:2px">{{pipeline.name}}</div>
+            <div class="col-3" style="padding-top:2px;padding-bottom:2px"><input type="submit" name="{{pipeline.id}}" value="Add tool to this pipeline"></div>
+        </div>
+    {% endfor %}
+    </form>
+
+</div>
+
+{% endblock %}

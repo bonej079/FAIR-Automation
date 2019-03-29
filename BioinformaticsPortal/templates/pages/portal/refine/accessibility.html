@@ -1,0 +1,30 @@
+{% extends 'layouts/base.html' %}
+{% load socialaccount %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>{{tool.tool.tool_name}} - Accessibility</h2>
+    <br>
+    <form action="/portal/tools/details/{{tool.tool_id}}" method="POST">{% csrf_token %}
+        <input type=hidden name="scope" value="accessibility">
+        <div class="row mb-3">
+            <div class="col-2">
+                <p>API Support</p>
+            </div>
+            <div class="col">
+            {% if accessibility.api == 0 %}
+                <input type="radio" name="api" value="5"> Tool supports API usage.<br>
+                <input type="radio" name="api" value="0" checked> Tool does not support API usage.<br>
+            {% else %}
+                <input type="radio" name="api" value="5" checked> Tool supports API usage.<br>
+                <input type="radio" name="api" value="0"> Tool does not support API usage.<br>
+            {% endif %}
+            </div>
+        </div>
+            
+        <input class="btn btn-outline-primary rounded-0" type="submit" value="Update">
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'layouts/base.html' %}
+{% load socialaccount %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>{{tool.tool.tool_name}} - Findability</h2>
+    <br>
+    <form action="/portal/tools/details/{{tool.tool_id}}" method="POST">{% csrf_token %}
+        <input type=hidden name="scope" value="findability">
+        <div class="row mb-3">
+            <div class="col-2">
+                <p>Download Link</p>
+            </div>
+            <div class="col">
+                <input type="text" name="downLink" value="{{findability.downlink}}" size=50>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-2">
+                <p>DOI Link</p>
+            </div>
+            <div class="col">
+                <input type="text" name="doiLink" value="{{findability.doiLink}}" size=50>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-2">
+                <p>Description</p>
+            </div>
+            <div class="col">
+                <textarea name="description" rows=8 cols=90>{{findability.descText}}</textarea>
+            </div>
+        </div>
+        
+        
+        <div class="row mb-3">
+            <div class="col-2">
+                <p>Description</p>
+            </div>
+            <div class="col">
+            {% if findability.versions == 0 %}
+                <input type="radio" name="version" value="2"> Previous Versions available on website/public repository.<br>
+                <input type="radio" name="version" value="0" checked> Previous Versions unavailable.<br>
+            {% else %}
+                <input type="radio" name="version" value="2" checked> Previous Versions available on website/public repository.<br>
+                <input type="radio" name="version" value="0"> Previous Versions unavailable.<br>
+            {% endif %}
+            </div>
+        </div>
+            
+        <input class="btn btn-outline-primary rounded-0" type="submit" value="Update">
+    </form>
+</div>
+
+{% endblock %}
