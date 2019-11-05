@@ -1,0 +1,7 @@
+Email: bioinformaticsresourceportal@gmail.com
+Password: TestPassword123
+
+
+Tool FAIR scores can be calculated from portal
+
+Dataset FAIR scores can be calculated from Datasets.py - name of dataset to be assessed must be changed in source code.

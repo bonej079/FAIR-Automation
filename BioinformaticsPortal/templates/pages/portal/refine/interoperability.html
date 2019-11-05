@@ -50,6 +50,20 @@
             {% endif %}
             </div>
         </div>
+        <div class="row mb-3">
+            <div class="col-2">
+                <p>Source code</p>
+            </div>
+            <div class="col">
+            {% if interoperability.sourceCode == 0 %}
+                <input type="radio" name="sc" value="5"> Tool source code is available.<br>
+                <input type="radio" name="sc" value="0" checked> Tool source code is not available.<br>
+            {% else %}
+                <input type="radio" name="sc" value="5" checked> Tool source code is available.<br>
+                <input type="radio" name="sc" value="0"> Tool source code is not available.<br>
+            {% endif %}
+            </div>
+        </div>
             
             
         <input class="btn btn-outline-primary rounded-0" type="submit" value="Update">

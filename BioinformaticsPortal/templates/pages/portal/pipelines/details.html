@@ -29,6 +29,87 @@
     
 
     </form>
+    <br/>
+    <div class="row border border-primary">
+        <div class="col-11 border-primary border-right mt-1 mb-1"> 
+            <h4>Findability</h4>
+        </div>
+        <div class="score col-1 mt-1 mb-1 text-center" score={{pipeline.findability}} style="padding-right:2px;padding-left:2px">
+            {{pipeline.findability}}%
+        </div>
+    </div>
+    {% for tool in scores %}
+        <div class="row border">
+            <div class="col-11 border-right mt-2 mb-2"> 
+                <a href="/portal/tools/details/{{tool.tool_id}}">{{tool.tool.tool_name}}</a>
+            </div>
+            <div class="score col-1 mt-1 mb-1 text-center" score={{tool.findability}} style="padding-right:2px;padding-left:2px">
+                {{tool.findability}}%
+            </div>
+        </div>
+    {% endfor %}
+
+    <br/>
+    <div class="row border border-primary">
+        <div class="col-11 border-primary border-right mt-1 mb-1"> 
+            <h4>Accessibility</h4>
+        </div>
+        <div class="score col-1 mt-1 mb-1 text-center" score={{pipeline.accessibility}} style="padding-right:2px;padding-left:2px">
+            {{pipeline.accessibility}}%
+        </div>
+    </div>
+    {% for tool in scores %}
+        <div class="row border">
+            <div class="col-11 border-right mt-2 mb-2"> 
+                <a href="/portal/tools/details/{{tool.tool_id}}">{{tool.tool.tool_name}}</a>
+            </div>
+            <div class="score col-1 mt-1 mb-1 text-center" score={{tool.accessibility}} style="padding-right:2px;padding-left:2px">
+                {{tool.accessibility}}%
+            </div>
+        </div>
+    {% endfor %}
+
+    <br/>
+    <div class="row border border-primary">
+        <div class="col-11 border-primary border-right mt-1 mb-1"> 
+            <h4>Interoperability</h4>
+        </div>
+        <div class="score col-1 mt-1 mb-1 text-center" score={{pipeline.interoperability}} style="padding-right:2px;padding-left:2px">
+            {{pipeline.interoperability}}%
+        </div>
+    </div>
+    {% for tool in scores %}
+        <div class="row border">
+            <div class="col-11 border-right mt-2 mb-2"> 
+                <a href="/portal/tools/details/{{tool.tool_id}}">{{tool.tool.tool_name}}</a>
+            </div>
+            <div class="score col-1 mt-1 mb-1 text-center" score={{tool.interoperability}} style="padding-right:2px;padding-left:2px">
+                {{tool.interoperability}}%
+            </div>
+        </div>
+    {% endfor %}
+
+    <br/>
+    <div class="row border border-primary">
+        <div class="col-11 border-primary border-right mt-1 mb-1"> 
+            <h4>Reusability</h4>
+        </div>
+        <div class="score col-1 mt-1 mb-1 text-center" score={{pipeline.reusability}} style="padding-right:2px;padding-left:2px">
+            {{pipeline.reusability}}%
+        </div>
+    </div>
+    {% for tool in scores %}
+        <div class="row border">
+            <div class="col-11 border-right mt-2 mb-2"> 
+                <a href="/portal/tools/details/{{tool.tool_id}}">{{tool.tool.tool_name}}</a>
+            </div>
+            <div class="score col-1 mt-1 mb-1 text-center" score={{tool.reusability}} style="padding-right:2px;padding-left:2px">
+                {{tool.reusability}}%
+            </div>
+        </div>
+    {% endfor %}
+
+    <br/><br/>
 </div>
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
@@ -39,5 +120,14 @@
   $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
 });
 </script>
+<script>
+    $('.score').each(function(){
+        var value = $(this).attr('score');
+        console.log(value);
+        var hue=((0+(value/100))*120).toString(10);
+        this.style.backgroundColor = ["hsl(",hue,",100%,50%)"].join("");
+    });
+    
+    </script>
 
 {% endblock %}

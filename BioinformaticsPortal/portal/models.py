@@ -23,6 +23,7 @@ class Findability(models.Model):
 class Accessibility(models.Model):
     tool = models.ForeignKey(Tool, on_delete = models.CASCADE)
     api = models.FloatField()
+    commandLine = models.FloatField()
 
 class Interoperability(models.Model):
     tool = models.ForeignKey(Tool, on_delete = models.CASCADE)
@@ -30,6 +31,7 @@ class Interoperability(models.Model):
     winComp = models.BooleanField()
     macComp = models.BooleanField()
     unixComp = models.BooleanField()
+    sourceCode = models.FloatField()
 
 class Reusability(models.Model):
     tool = models.ForeignKey(Tool, on_delete = models.CASCADE)    

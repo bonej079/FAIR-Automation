@@ -21,7 +21,7 @@ with open("ontologies.yml", 'r') as ont:
 
 my_api_key = "AIzaSyAqqbU_8-csEQuknlFfEfccDnviAXSpH9o"
 my_cse_id = "010537144392431308903:g2eqgue84js"
-search_phrase = "clustal omega"
+search_phrase = "[Name of Tool]"
 driver = webdriver.Firefox()
 
 def google_search(search_term, api_key, cse_id, **kwargs):
@@ -30,7 +30,7 @@ def google_search(search_term, api_key, cse_id, **kwargs):
     return res['items']
 
 def findPage(results, search_phrase):
-    phrases = ["protein", "dna", "bioinformatics", "genome", "nucleotide", "biological", "biotechnology", "alignment", "amino acid"]
+    phrases = ["protein", "dna", "bioinformatics", "genome", "nucleotide", "biological", "biotechnology", "alignment", "amino acid", "autoradiography", "autosomal", "blotting", "blots", "cell", "computational biology", "sequencing", "similarity", "cluster", "cytoplasm", "enzyme", "gene", "genomics", "immunoglobuline", "lead", "mitosis"]
     for result in results:
         if search_phrase in result["title"].lower():
             driver.get(result["link"])
@@ -39,8 +39,9 @@ def findPage(results, search_phrase):
                     link=result["link"]
                     return link
 
-results = google_search(search_phrase ,my_api_key, my_cse_id, num=10)
+results = google_search(search_phrase ,my_api_key, my_cse_id, num=20)
 link = findPage(results, search_phrase)
+
 
 download = ""
 publicRepo = ""
@@ -56,7 +57,9 @@ apiInfo = ""
 doi = ""
 doiTitle=""
 ontology=""
-
+source = ""
+cli = ""
+git= ""
 # print(link)
 
 if link:
@@ -64,27 +67,47 @@ if link:
     try:
         elem = driver.find_element_by_partial_link_text("Download")
         download = "available"
-        elem.click()
-        if "www.github.com" in driver.current_url:
-            # print("public resource available")
-            publicRepo = "available"
-        else:
-            if "www.github.com" in driver.page_source.lower():
-                # print("public resource available")
-                publicRepo = "available"
-
-            try:    
-                versElem = driver.find_element_by_xpath("//*[contains(text(), 'Older versions')]")
-            except Exception:
-                pass
-                
-            if not versElem:
-                try:
-                    versElem = driver.find_element_by_xpath("//*[contains(text(), 'Previous versions')]")
-                except Exception:
-                    pass
+        elem.click()  
     except Exception:
         pass
+
+    if "github.com" in driver.current_url:
+        # print("public resource available")
+        publicRepo = "available"
+        documentation = "available"
+        download = "available"
+        versElem = "available"
+        source = "available"
+    else:
+        try:
+            git = driver.find_element_by_partial_link_text("github.com")
+            print(git)
+        except Exception:
+            pass
+        if not git:
+            try:
+                git = driver.find_element_by_xpath("//*[contains(text(), 'GitHub')]")
+            except Exception:
+                pass
+        if git:
+            # print("public resource available")
+            publicRepo = "available"
+            documentation = "available"
+            download="available"
+            versElem = "available"
+            source = "available"
+
+    if not versElem:
+        try:    
+            versElem = driver.find_element_by_xpath("//*[contains(text(), 'Older versions')]")
+        except Exception:
+            pass
+            
+        if not versElem:
+            try:
+                versElem = driver.find_element_by_xpath("//*[contains(text(), 'Previous versions')]")
+            except Exception:
+                pass
 
     try:
         documentation = driver.find_element_by_xpath("//*[contains(text(), 'Documentation')]")
@@ -96,6 +119,43 @@ if link:
             documentation = driver.find_element_by_xpath("//*[contains(text(), 'Documentation')]")
         except Exception:
             pass
+
+    if not source:
+        try:
+            source = driver.find_element_by_xpath("//*[contains(text(), 'source code')]")
+        except Exception:
+            pass
+
+    if not source:
+        try:
+            source = driver.find_element_by_xpath("//*[contains(text(), 'Source code')]")
+        except Exception:
+            pass
+    
+    if not source:
+        try:
+            source = driver.find_element_by_xpath("//*[contains(text(), 'Source Code')]")
+        except Exception:
+            pass
+
+    if not cli:
+        try:
+            cli = driver.find_element_by_xpath("//*[contains(text(), 'command line')]")
+        except Exception:
+            pass
+
+    if not cli:
+        try:
+            cli = driver.find_element_by_xpath("//*[contains(text(), 'Command line')]")
+        except Exception:
+            pass
+
+    if not cli:
+        try:
+            cli = driver.find_element_by_xpath("//*[contains(text(), 'Command Line')]")
+        except Exception:
+            pass
+
     try:
         windowsComp = driver.find_element_by_xpath("//*[contains(text(), 'Windows')]")
     except Exception:
@@ -118,6 +178,118 @@ if link:
         pass
 
     driver.get(link)
+    if not publicRepo:
+        if "github.com" in driver.current_url:
+            # print("public resource available")
+            publicRepo = "available"
+            documentation = "available"
+            download = "available"
+            versElem = "available"
+            source = "available"
+        else:
+            try:
+                git = driver.find_element_by_partial_link_text("github.com")
+                print(git)
+            except Exception:
+                pass
+            if not git:
+                try:
+                    git = driver.find_element_by_xpath("//*[contains(text(), 'GitHub')]")
+                except Exception:
+                    pass
+            if git:
+                # print("public resource available")
+                publicRepo = "available"
+                documentation = "available"
+                download="available"
+                versElem = "available"
+                source = "available"
+
+    if not versElem:
+        try:    
+            versElem = driver.find_element_by_xpath("//*[contains(text(), 'Older versions')]")
+        except Exception:
+            pass
+            
+        if not versElem:
+            try:
+                versElem = driver.find_element_by_xpath("//*[contains(text(), 'Previous versions')]")
+            except Exception:
+                pass
+
+    if not documentation:
+        try:
+            documentation = driver.find_element_by_xpath("//*[contains(text(), 'Documentation')]")
+        except Exception:
+            pass
+
+    if not documentation:
+        try:
+            documentation = driver.find_element_by_xpath("//*[contains(text(), 'Documentation')]")
+        except Exception:
+            pass
+
+    if not source:
+        try:
+            source = driver.find_element_by_xpath("//*[contains(text(), 'source code')]")
+        except Exception:
+            pass
+
+    if not source:
+        try:
+            source = driver.find_element_by_xpath("//*[contains(text(), 'Source code')]")
+        except Exception:
+            pass
+    
+    if not source:
+        try:
+            source = driver.find_element_by_xpath("//*[contains(text(), 'Source Code')]")
+        except Exception:
+            pass
+
+    if not cli:
+        try:
+            cli = driver.find_element_by_xpath("//*[contains(text(), 'command line')]")
+        except Exception:
+            pass
+
+    if not cli:
+        try:
+            cli = driver.find_element_by_xpath("//*[contains(text(), 'Command line')]")
+        except Exception:
+            pass
+
+    if not cli:
+        try:
+            cli = driver.find_element_by_xpath("//*[contains(text(), 'Command Line')]")
+        except Exception:
+            pass
+
+    if not windowsComp:
+        try:
+            windowsComp = driver.find_element_by_xpath("//*[contains(text(), 'Windows')]")
+        except Exception:
+            pass
+
+    if not unixComp:
+        try:
+            unixComp = driver.find_element_by_xpath("//*[contains(text(), 'UNIX')]")
+        except Exception:
+            pass
+    
+    if not unixComp:
+        try:
+            driver.find_element_by_xpath("//*[contains(text(), 'Unix')]")
+        except Exception:
+            pass
+    
+    if not macComp:
+        try:        
+            macComp = driver.find_element_by_xpath("//*[contains(text(), 'Mac')]")
+        except Exception:
+            pass
+
+    
     try:
         about = driver.find_element_by_partial_link_text("About")
     except Exception:
@@ -158,6 +330,12 @@ if link:
         except Exception:
             pass
 
+    if not citeInfo:
+        try:
+            citeInfo = driver.find_element_by_xpath("//*[contains(text(), 'Citations')]")
+        except Exception:
+            pass
+
     try:
         contact = driver.find_element_by_partial_link_text("Contact")
     except Exception:
@@ -166,6 +344,18 @@ if link:
     if not contact:
         try:
             contact = driver.find_element_by_xpath("//*[contains(text(), 'email')]")
+        except Exception:
+            pass
+    
+    if not contact:
+        try:
+            contact = driver.find_element_by_xpath("//*[contains(text(), 'Contact')]")
+        except Exception:
+            pass
+
+    if not contact:
+        try:
+            contact = driver.find_element_by_xpath("//*[contains(text(), 'contact')]")
         except Exception:
             pass
 
@@ -188,7 +378,7 @@ if link:
         pass
 
     try:
-        doi = driver.find_element_by_css_selector('a[href*=doi]')
+        doi = driver.find_element_by_xpath("//*[contains(text(), 'doi')]")
         doi.click()
         print(driver.current_url)
         doi = driver.find_element_by_class_name('epub-doi')
@@ -197,7 +387,7 @@ if link:
         pass
     if not doi:
         try:
-            doi = driver.find_element_by_css_selector('a[href*=Citation]')
+            doi = driver.find_element_by_xpath("//*[contains(text(), 'doi')]")
             doi.click()
             print(driver.current_url)
             doiTitle = driver.find_element_by_tag_name("title").get_attribute("textContent")
@@ -250,7 +440,7 @@ else:
 
 if documentation:
     print("Tool documentation available.")
-    documentationVal = 5.0
+    documentationVal = 4.0
 else:
     print("No tool documentation found.")
     documentationVal = 0.0
@@ -281,7 +471,7 @@ if about:
     aboutVal = 5.0
 else:
     print("No tool description found.")
-    aboutVal = 5.0
+    aboutVal = 0.0
 
 if citeInfo:
     print("Information on how to cite tool is given.")
@@ -313,21 +503,35 @@ else:
 
 if ontology:
     print("Tool uses a community accepted ontology.")
-    ontologyVal = 5.0
+    ontologyVal = 4.0
 else:
     print("Tool does not use an ontology, or no information was given on what ontologies are used.")
     ontologyVal = 0.0
 
+if source:
+    print("Tool source code available.")
+    sourceVal = 5.0
+else:
+    print("Tool source code not available.")
+    sourceVal = 0.0
+
+if cli:
+    print("Information about command line available.")
+    cliVal = 5.0
+else:
+    print("No information about command line available.")
+    cliVal=0.0
+
 findability = ((downloadVal + doiVal + aboutVal + versVal) / (8+5+5+2)) * 100
 findability = round(findability, 2)
 
-accessiblity = (apiVal/5)*100
+accessiblity = ((apiVal+cliVal)/(5+5))*100
 accessiblity = round(accessiblity, 2)
 
-interoperability = (compVal/5) * 100
+interoperability = ((compVal+sourceVal)/(5+5)) * 100
 interoperability = round(interoperability, 2)
 
-reusability = ((publicRepoVal + ontologyVal + documentationVal + contactVal + citeVal) / (8+5+5+2+2)) * 100
+reusability = ((publicRepoVal + ontologyVal + documentationVal + contactVal + citeVal) / (8+4+4+2+2)) * 100
 reusability = round(reusability, 2)
 
 print("==============================")
@@ -348,3 +552,5 @@ print(ontologyVal)
 print(documentationVal)
 print(contactVal)
 print(citeVal)
+print(sourceVal)
+print(cliVal)

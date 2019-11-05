@@ -1,0 +1,35 @@
+{% extends 'layouts/base.html' %}
+{% load socialaccount %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>Add new Tool</h2>
+    <br>
+    <form action="{% url 'add' %}" method="post">{% csrf_token %}
+        <input type=hidden name="tool_id" value="{{tool.id}}">
+
+        <div class="row mb-3">
+            <div class="col-2">
+                <p>Tool name</p>
+            </div>
+            <div class="col">
+                <input type="text" name="name" size=50>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-2">
+                <p>Tool website</p>
+            </div>
+            <div class="col">
+                <input type="text" name="website" size=50>
+            </div>
+        </div>
+        <input class="btn btn-outline-primary rounded-0" type="submit" value="Add tool">
+
+    </form>
+
+</div>
+
+{% endblock %}

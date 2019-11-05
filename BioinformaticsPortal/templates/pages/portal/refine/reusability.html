@@ -1,0 +1,118 @@
+{% extends 'layouts/base.html' %}
+{% load socialaccount %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>{{tool.tool.tool_name}} - Reusability</h2>
+    <br>
+    <form action="/portal/tools/details/{{tool.tool_id}}" method="POST">{% csrf_token %}
+        <input type=hidden name="scope" value="reusability">
+        <div class="row mb-3">
+            <div class="col-2">
+                <p>Public Repository</p>
+            </div>
+            <div class="col">
+                <input type="text" name="pubRep" value="{{reusability.repositoryLink}}" size=90>
+            </div>
+        </div>
+     
+        <div class="row mb-3">
+            <div class="col-2">
+                <p>Uses ontologies</p>
+            </div>
+            <div class="col">
+            {% if reusability.usesOnt == 0 %}
+                <input type="radio" id="uses" name="ontologies" value="4"> Tool uses ontologies.<br>
+                <input type="radio" id="notUses" name="ontologies" value="0" checked> Tool does not use ontologies.<br>
+            {% else %}
+                <input type="radio" id="uses" name="ontologies" value="4" checked> Tool uses ontologies.<br>
+                <input type="radio" id="notUses" name="ontologies" value="0"> Tool does not use ontologies.<br>
+            {% endif %}
+            </div>
+        </div>
+
+        {% if reusability.usesOnt != 0 %}
+            <div class="row mb-3">
+                <div class="col-2">
+                    <p id="ontTag">Ontologies used <br> (if any)</p>
+                </div>
+                <div class="col">
+                    <textarea id=ontUsed name="ontUsed" rows=8 cols=50>{{reusability.ontUsed}}</textarea>
+                </div>
+            </div>
+        {% else %}
+            <div class="row mb-3">
+                <div class="col-2">
+                    <p hidden id="ontTag">Ontologies used <br> (if any)</p>
+                </div>
+                <div class="col">
+                    <textarea hidden id=ontUsed name="ontUsed" rows=8 cols=50>{{reusability.ontUsed}}</textarea>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="row mb-3">
+            <div class="col-2">
+                <p>Documentation</p>
+            </div>
+            <div class="col">
+            {% if reusability.documentation == 0 %}
+                <input type="radio" name="documentation" value="4"> Tool documentation available on website.<br>
+                <input type="radio" name="documentation" value="0" checked> Tool documentaion not available on website.<br>
+            {% else %}
+                <input type="radio" name="documentation" value="4" checked> Tool documentation available on website.<br>
+                <input type="radio" name="documentation" value="0"> Tool documentation not available on website.<br>
+            {% endif %}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-2">
+                <p>Contact Information</p>
+            </div>
+            <div class="col">
+            {% if reusability.contact == 0 %}
+                <input type="radio" name="contact" value="2"> Information on how to contact tool developer available on website.<br>
+                <input type="radio" name="contact" value="0" checked> Information on how to contact tool developer not provided.<br>
+            {% else %}
+                <input type="radio" name="contact" value="2" checked> Information on how to contact tool developer available on website.<br>
+                <input type="radio" name="contact" value="0"> Information on how to contact tool developer not provided.<br>
+            {% endif %}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-2">
+                <p>Citing Tool</p>
+            </div>
+            <div class="col">
+            {% if reusability.citation == 0 %}
+                <input type="radio" name="citation" value="2"> Information on how to cite tool provided on website.<br>
+                <input type="radio" name="citation" value="0" checked> Information on how to cite tool not provided.<br>
+            {% else %}
+                <input type="radio" name="citation" value="2" checked> Information on how to cite tool provided on website.<br>
+                <input type="radio" name="citation" value="0"> Information on how to cite tool not provided.<br>
+            {% endif %}
+            </div>
+        </div>
+            
+        <input class="btn btn-outline-primary rounded-0" type="submit" value="Update">
+    </form>
+</div>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script>
+    $('#notUses').change(function() {
+        $('#ontTag').attr("hidden", true);
+        $('#ontUsed').attr("hidden", true);
+        
+   });
+   $('#uses').change(function() {
+        $('#ontTag').removeAttr("hidden");
+        $('#ontUsed').removeAttr("hidden");
+   });
+   
+</script>
+
+{% endblock %}

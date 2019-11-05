@@ -22,6 +22,21 @@
             {% endif %}
             </div>
         </div>
+
+        <div class="row mb-3">
+            <div class="col-2">
+                <p>Command Line</p>
+            </div>
+            <div class="col">
+            {% if accessibility.commandLine == 0 %}
+                <input type="radio" name="cli" value="5"> Tool can be accessed through command line.<br>
+                <input type="radio" name="cli" value="0" checked> Tool cannot be accessed through command line.<br>
+            {% else %}
+                <input type="radio" name="cli" value="5" checked> Tool can be accessed through command line.<br>
+                <input type="radio" name="cli" value="0"> Tool cannot be accessed through command line..<br>
+            {% endif %}
+            </div>
+        </div>
             
         <input class="btn btn-outline-primary rounded-0" type="submit" value="Update">
     </form>

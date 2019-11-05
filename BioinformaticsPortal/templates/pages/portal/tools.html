@@ -34,9 +34,11 @@
         <a href="">Add private tool</a>
         <br>
     <br>
-    <h3>Public Tools</h3>
+    <h3 class="float-left">Public Tools</h3><a class="float-right mt-4" href="/portal/add">Add tool</a>
+    <br/><br/>
+    
     {% else %}
-    <h3>Tools</h3>
+    <h3 class="floar-left">Tools</h3><a class="float-right mt-4" href="">Add tool</a><br/><br/>
     {% endif %}
     
     <div class="row border border-primary">
@@ -59,7 +61,7 @@
         <div class="col-1 mt-1 mb-1"><a href="add/{{tool.tool_id}}">Add to Pipeline</a></div>
     </div>
     {% endfor %}
-    
+    <br/>
 </div>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script>

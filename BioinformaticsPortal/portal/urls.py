@@ -13,5 +13,7 @@ urlpatterns = [
     path('portal/tools/private/<int:id>', views.privateDetails, name="private_details"),
     path('portal/refine/findability/<int:id>', views.refineFindability, name="refine_findability"),
     path('portal/refine/accessibility/<int:id>', views.refineAccessibility, name="refine_accessibility"),
-    path('portal/refine/interoperability/<int:id>', views.refineInteroperability, name="refine_interoperability")
+    path('portal/refine/interoperability/<int:id>', views.refineInteroperability, name="refine_interoperability"),
+    path('portal/refine/reusability/<int:id>', views.refineReusability, name="refine_reusability"),
+    path('portal/add', views.addTool, name="add")
 ]

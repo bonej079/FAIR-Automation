@@ -72,7 +72,16 @@
         {% else %}
             <div class="border-right col-7 mt-1 mb-1">Tool supports API usage.</div>
         {% endif %}
-        <div class="col-1 mt-1 mb-1 text-center">{{accessibility.api|mul:20}}%</div>
+        <div class="col-1 mt-1 mb-1 text-center">{{accessibility.api|mul:10}}%</div>
+    </div>
+    <div class="row border">
+        <div class="col-4 border-right mt-1 mb-1">Command Line</div>
+        {% if accessibility.api == 0 %}
+            <div class="border-right col-7 text-info mt-1 mb-1">No information is provided on tool's command line accessibility. Accessibility could be improved if this information is provided.</div>
+        {% else %}
+            <div class="border-right col-7 mt-1 mb-1">Tool can be accessed through command line.</div>
+        {% endif %}
+        <div class="col-1 mt-1 mb-1 text-center">{{accessibility.commandLine|mul:10}}%</div>
     </div>
     <a href="/portal/refine/accessibility/{{tool.id}}">Refine Accessibilitiy</a>
 
@@ -93,7 +102,7 @@
         {% else %}
             <div class="border-right col-7 mt-1 mb-1">Tool supported on Windows OS.</div>
         {% endif %}
-        <div class="col-1 mt-1 mb-1 text-center">{{interoperability.winComp|mul:33.3}}%</div>
+        <div class="col-1 mt-1 mb-1 text-center">{{interoperability.winComp|mul:16.7}}%</div>
     </div>
     <div class="row border">
         <div class="col-4 border-right mt-1 mb-1">MacOS Compatibility</div>
@@ -102,7 +111,7 @@
         {% else %}
             <div class="border-right col-7 mt-1 mb-1">Tool supported on MacOS.</div>
         {% endif %}
-        <div class="col-1 mt-1 mb-1 text-center">{{interoperability.macComp|mul:33.3}}%</div>
+        <div class="col-1 mt-1 mb-1 text-center">{{interoperability.macComp|mul:16.7}}%</div>
     </div>
     <div class="row border">
         <div class="col-4 border-right mt-1 mb-1">UNIX Compatibility</div>
@@ -111,7 +120,16 @@
         {% else %}
             <div class="border-right col-7 mt-1 mb-1">Tool supported on UNIX.</div>
         {% endif %}
-        <div class="col-1 mt-1 mb-1 text-center">{{interoperability.unixComp|mul:33.3}}%</div>
+        <div class="col-1 mt-1 mb-1 text-center">{{interoperability.unixComp|mul:16.7}}%</div>
+    </div>
+    <div class="row border">
+        <div class="col-4 border-right mt-1 mb-1">Source code</div>
+        {% if interoperability.unixComp == 0 %}
+            <div class="border-right col-7 text-info mt-1 mb-1">Tool source code is not provided. Interoperability could be improved if tool source code was provided.</div>
+        {% else %}
+            <div class="border-right col-7 mt-1 mb-1">Tool source code is provided.</div>
+        {% endif %}
+        <div class="col-1 mt-1 mb-1 text-center">{{interoperability.sourceCode|mul:10}}%</div>
     </div>
     <a href="/portal/refine/interoperability/{{tool.id}}">Refine Interoperability</a>
     
@@ -139,9 +157,13 @@
         <div class="col-4 border-right mt-1 mb-1">Ontologies</div>
     {% if reusability.usesOnt %}
         {% if reusability.ontology == 0 %}
-            <div class="border-right col-7 text-info mt-1 mb-1">{{reusability.ontUsed}} Reusability could be improved if ontologies used (if any) were provided.</div>
+            <div class="border-right col-7 text-info mt-1 mb-1">No information was provided on what ontologies are used. Tool may not use an ontology altogether. Reusability could be improved if ontologies used (if any) were provided.</div>
         {% else %}
-            <div class="border-right col-7 mt-1 mb-1">{{reusability.ontUsed}}</a></div>
+            {% if reusability.ontology == 2%}
+                <div class="border-right col-7 mt-1 mb-1">{{reusability.ontUsed}}<div class="text-info">Tool was not awarded the full score in ontologies as the ontologies listed above are not standard. Tool's reusability could be improved if it used standard ontologies</div></div>
+            {% else %}
+                <div class="border-right col-7 mt-1 mb-1">{{reusability.ontUsed}}</div>
+            {% endif %}
         {% endif %}
         <div class="col-1 mt-1 mb-1 text-center">{{reusability.ontology|mul:5}}%</div>
     {% else %}
@@ -176,7 +198,7 @@
         {% endif %}
         <div class="col-1 mt-1 mb-1 text-center">{{reusability.citation|mul:5}}%</div>
     </div>
-    <a href="">Refine Reusability</a>
+    <a href="/portal/refine/reusability/{{tool.id}}">Refine Reusability</a>
 </div>
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
