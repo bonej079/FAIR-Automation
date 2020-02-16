@@ -52,7 +52,7 @@
     </div>
     {% for tool in tools %}
     <div class="row border border-secondary border-top-0 ">
-        <div class="col-1 border-right mt-1 mb-1"><img src="{% static 'imgs/' %}{{tool.tool.tool_name}}.png" width=40 height=40></div>
+        <div class="col-1 border-right mt-1 mb-1"><img src="{% static 'imgs/' %}{{tool.tool.tool_name | lower}}.png" width=40 height=40></div>
         <div class="col-2 border-right mt-1 mb-1" style="padding-top:7px;"><a href="details/{{tool.tool_id}}">{{tool.tool.tool_name}}</a></div>
         <div class="col-2 border-right score mt-1 mb-1" score="{{tool.findability}}" id="findability">{{tool.findability}}%</div>
         <div class="col-2 border-right score mt-1 mb-1" score="{{tool.accessibility}}" id="accessibility">{{tool.accessibility}}%</div>

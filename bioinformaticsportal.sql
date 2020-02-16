@@ -28,6 +28,18 @@ SET time_zone = "+00:00";
 -- Table structure for table `account_emailaddress`
 --
 
+DROP DATABASE IF EXISTS BioinformaticsPortal;
+DROP USER IF EXISTS 'portal_admin'@'localhost' ;
+FLUSH PRIVILEGES;
+
+CREATE DATABASE BioinformaticsPortal;
+CREATE USER 'portal_admin'@'%' IDENTIFIED BY 'test-password';
+GRANT ALL PRIVILEGES ON BioinformaticsPortal.* TO 'portal_admin'@'%';
+FLUSH PRIVILEGES;
+ALTER DATABASE `BioinformaticsPortal` CHARACTER SET utf8;
+
+USE `BioinformaticsPortal` ;
+
 CREATE TABLE `account_emailaddress` (
   `id` int(11) NOT NULL,
   `email` varchar(254) NOT NULL,

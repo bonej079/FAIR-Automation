@@ -5,7 +5,7 @@
 
 {% block content %}
 <div class="container mb-4">
-    <img src="{% static 'imgs/' %}{{tool.tool_name}}.png" width=200 height=200>
+    <img src="{% static 'imgs/' %}{{ tool.tool_name|lower }}.png" width=200 height=200> <!--JB-->
     <h2>{{tool.tool_name}}</h2>
     <br>
 

@@ -38,12 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    
+
     'mathfilters',
     'compressor',
     'portal',
@@ -93,8 +93,8 @@ DATABASES = {
         'NAME': 'BioinformaticsPortal',
         'USER': 'portal_admin',
         'PASSWORD': 'test-password',
-        'HOST': 'localhost',
-        'PORT': ''
+        'HOST': '172.17.0.3',
+        'PORT': '3306'
     }
 }
 
