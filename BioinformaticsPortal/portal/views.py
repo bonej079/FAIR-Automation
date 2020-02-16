@@ -205,7 +205,8 @@ def details(request, id):
             else:
                 upRe.usesOnt = 1
                 if request.POST['ontUsed'] != "":
-                    ont = "C:/Users/Nigel/Desktop/FAIR-Automation/BioinformaticsPortal/portal/static/data/ontologies.yml"
+                    # ont = "C:/Users/Nigel/Desktop/FAIR-Automation/BioinformaticsPortal/portal/static/data/ontologies.yml"
+                    ont = "/media/jbon4/Data/Development/python/Bioinformatics Portal/FAIR-Automation/BioinformaticsPortal/static/data/ontologies.yml"
                     with open(ont, 'r') as ont:
                         try:
                             content = yaml.load(ont)
@@ -428,7 +429,8 @@ def addTool(request):
                 tool = ""
             if not tool:
                 active_ontologies = []
-                with open("C:/Users/Nigel/Desktop/FAIR-Automation/BioinformaticsPortal/portal/static/data/ontologies.yml", 'r') as ont:
+                # with open("C:/Users/Nigel/Desktop/FAIR-Automation/BioinformaticsPortal/portal/static/data/ontologies.yml", 'r') as ont:
+                with open("/media/jbon4/Data/Development/python/Bioinformatics Portal/FAIR-Automation/BioinformaticsPortal/static/data/ontologies.yml", 'r') as ont:
                     try:
                         content = yaml.load(ont)
                         for item in content.items():
@@ -888,7 +890,8 @@ def addTool(request):
                 tool = ""
             if not tool:
                 active_ontologies = []
-                with open("C:/Users/Nigel/Desktop/FAIR-Automation/BioinformaticsPortal/portal/static/data/ontologies.yml", 'r') as ont:
+                # with open("C:/Users/Nigel/Desktop/FAIR-Automation/BioinformaticsPortal/portal/static/data/ontologies.yml", 'r') as ont:
+                with open("/media/jbon4/Data/Development/python/Bioinformatics Portal/FAIR-Automation/BioinformaticsPortal/static/data/ontologies.yml", 'r') as ont:
                     try:
                         content = yaml.load(ont)
                         for item in content.items():
