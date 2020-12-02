@@ -24,6 +24,9 @@
           <a class="nav-link" href="{% url 'pipelines' %}">Pipelines <span class="sr-only">(current)</span></a>
         </li>
       {% endif %}
+      <li class="nav-item {% if 'publications' in request.resolver_match.url_name %} active {% endif %}">
+        <a class="nav-link" href="{% url 'publications' %}">Publications <span class="sr-only">(current)</span></a>
+      </li>
       {% comment %} <li class="nav-item {% if 'about' in request.resolver_match.url_name %} active {% endif %}">
         <a class="nav-link"  href="{% url 'about' %}">About</a>
       </li>
