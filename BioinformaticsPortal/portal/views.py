@@ -14,6 +14,9 @@ def index(request):
         'view_name': 'Home'
     })
 
+def publications(request):
+	return render(request, 'portal/publications.html', {})
+
 def tools(request):
     if request.method == "POST":
         pipeline_id = list(request.POST.keys())[2]

@@ -3,8 +3,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('portal/home/', views.index, name='home'),
-    path('portal/tools/', views.tools, name='tools'),
+    path('portal/home/', views.index, name="home"),
+    path('portal/publications/', views.publications, name="publications"),
+    path('portal/tools/', views.tools, name="tools"),
     path('portal/tools/details/<int:id>', views.details, name="details"),
     path('portal/tools/add/<int:id>', views.add, name="add"),
     path('portal/pipelines/', views.pipelines, name="pipelines"),
