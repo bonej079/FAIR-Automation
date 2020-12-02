@@ -93,7 +93,7 @@ DATABASES = {
         'NAME': 'BioinformaticsPortal',
         'USER': 'portal_admin',
         'PASSWORD': 'test-password',
-        'HOST': '172.17.0.3',
+        'HOST': '127.0.0.1',
         'PORT': '3306'
     }
 }
