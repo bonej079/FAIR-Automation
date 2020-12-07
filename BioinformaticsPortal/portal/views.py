@@ -8,6 +8,7 @@ from googleapiclient.discovery import build
 from selenium import webdriver
 from crossref.restful import Works, Journals
 import requests
+import json
 
 def index(request):
     return render(request, 'portal/index.html', {
@@ -418,6 +419,18 @@ def refineReusability(request, id):
     }
     return render(request, 'portal/refine/reusability.html', context)
 
+def getBitlyLink(link):
+    link = "https://doi.org/10.1002/cpet.8"
+    headers = {
+        'Authorization': 'Bearer b182461614aa63cf46f8d154546767416ad8d747',
+        'Content-Type': 'application/json',
+    }
+    data = '{ "long_url": "' + link + '", "domain": "bit.ly" }'
+    response = requests.post('https://api-ssl.bitly.com/v4/shorten', headers=headers, data=data)
+    response_dict = json.loads(response.text)
+    return response_dict["link"]
+
+
 def addTool(request):
     if request.POST:
         print(request.POST)
@@ -440,23 +453,10 @@ def addTool(request):
                                     active_ontologies.append(x[i]["title"].lower())
                     except yaml.YAMLError as exc:
                         print(exc)
-                my_api_key = "AIzaSyAqqbU_8-csEQuknlFfEfccDnviAXSpH9o"
-                my_cse_id = "010537144392431308903:g2eqgue84js"
+
                 search_phrase = request.POST['name']
+
                 driver = webdriver.Firefox()
-                def google_search(search_term, api_key, cse_id, **kwargs):
-                    service = build("customsearch", "v1", developerKey=api_key)
-                    res = service.cse().list(q=search_term, cx=cse_id, **kwargs).execute()
-                    return res['items']
-                def findPage(results, search_phrase):
-                    phrases = ["protein", "dna", "bioinformatics", "genome", "nucleotide", "biological", "biotechnology", "alignment", "amino acid", "autoradiography", "autosomal", "blotting", "blots", "cell", "computational biology", "sequencing", "similarity", "cluster", "cytoplasm", "enzyme", "gene", "genomics", "immunoglobuline", "lead", "mitosis"]
-                    for result in results:
-                        if search_phrase in result["title"].lower():
-                            driver.get(result["link"])
-                            for phrase in phrases:
-                                if phrase in driver.page_source.lower():
-                                    link=result["link"]
-                                    return link
                 link = request.POST['website']
                 download = ""
                 publicRepo = ""
@@ -476,6 +476,7 @@ def addTool(request):
                 source = ""
                 cli = ""
                 git= ""
+
                 if link:
                     driver.get(link)
                     try:
@@ -484,6 +485,7 @@ def addTool(request):
                         elem.click()  
                     except Exception:
                         pass
+
                     if "github.com" in driver.current_url:
                         # print("public resource available")
                         publicRepo = driver.current_url
@@ -868,6 +870,7 @@ def addTool(request):
                     cliVal = 5.0
                 else:
                     cliVal=0.0
+
                 findability = ((downloadVal + doiVal + aboutVal + versVal) / (8+5+5+2)) * 100
                 findability = round(findability, 2)
                 accessiblity = ((apiVal+cliVal)/(5+5))*100
@@ -875,12 +878,20 @@ def addTool(request):
                 interoperability = ((compVal+sourceVal)/(5+5)) * 100
                 interoperability = round(interoperability, 2)
                 reusability = ((publicRepoVal + ontologyVal + documentationVal + contactVal + citeVal) / (8+4+4+2+2)) * 100
+
+                if doi:
+                    doi = getBitlyLink(doi)
+                if download:
+                    download = getBitlyLink(download)
+                if publicRepo:
+                    publicRepo = getBitlyLink(publicRepoVal)
+
                 tool = Tool.objects.create(tool_name=request.POST['name'], isPrivate=0)
                 tool = Tool.objects.get(tool_name = request.POST['name'])
-                fairScore = FairScore.objects.create(findability = findability, accessibility = accessiblity, interoperability = interoperability, reusability = reusability, tool_id = tool.id)
-                find = Findability.objects.create(free_down=downloadVal, doi = doiVal, description = aboutVal, versions = versVal, tool_id=tool.id, doiLink=doi, downlink=download)
-                acc = Accessibility.objects.create(api=apiVal, tool_id = tool.id, commandLine=cliVal)
-                interop = Interoperability.objects.create(compatibility = compVal, tool_id=tool.id, macComp=macComp, unixComp=unixComp, winComp=winComp, sourceCode=sourceVal)
+                fairScore = FairScore.objects.create(findability=findability, accessibility = accessiblity, interoperability = interoperability, reusability = reusability, tool_id = tool.id)
+                find = Findability.objects.create(free_down=downloadVal, doi=doiVal, description = aboutVal, versions = versVal, tool_id=tool.id, doiLink=doi, downlink=download)
+                acc = Accessibility.objects.create(api=apiVal, tool_id=tool.id, commandLine=cliVal)
+                interop = Interoperability.objects.create(compatibility=compVal, tool_id=tool.id, macComp=macComp, unixComp=unixComp, winComp=winComp, sourceCode=sourceVal)
                 reuse= Reusability.objects.create(public_repo=publicRepoVal, ontology=ontologyVal, documentation=documentationVal, contact=contactVal, citation=citeVal, tool_id=tool.id, repositoryLink=publicRepo, ontUsed=ontologies, usesOnt=1) 
         else:
             tool=""
@@ -1339,6 +1350,14 @@ def addTool(request):
                 reusability = ((publicRepoVal + ontologyVal + documentationVal + contactVal + citeVal) / (8+4+4+2+2)) * 100
                 tool = Tool.objects.create(tool_name=request.POST['name'], isPrivate=0)
                 tool = Tool.objects.get(tool_name = request.POST['name'])
+
+                if doi:
+                    doi = getBitlyLink(doi)
+                if download:
+                    download = getBitlyLink(download)
+                if publicRepo:
+                    publicRepo = getBitlyLink(publicRepoVal)
+
                 fairScore = FairScore.objects.create(findability = findability, accessibility = accessiblity, interoperability = interoperability, reusability = reusability, tool_id = tool.id)
                 find = Findability.objects.create(free_down=downloadVal, doi = doiVal, description = aboutVal, versions = versVal, tool_id=tool.id, doiLink=doi, downlink=download)
                 acc = Accessibility.objects.create(api=apiVal, tool_id = tool.id, commandLine=cliVal)
