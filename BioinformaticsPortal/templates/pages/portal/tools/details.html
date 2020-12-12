@@ -22,7 +22,7 @@
         {% if findability.free_down == 0 %}
             <div class="border-right col-7 mt-1 mb-1 text-info">{{downlink}} Findability could be improved if a download link was provided.</div>
         {% else %}
-            <div class="border-right col-7 mt-1 mb-1"><a href="{{findability.downlink}}">Link provided on website.</a></div>
+            <div class="border-right col-7 mt-1 mb-1"><a href="{{findability.shortDownLink}}">Link provided on website.</a></div>
         {% endif %}
         <div class="col-1 mt-1 mb-1 text-center">{{findability.free_down|mul:5}}%</div>
     </div>
@@ -31,7 +31,7 @@
         {% if findability.doi == 0 %}
             <div class="border-right col-7 text-info mt-1 mb-1">No DOI found. Findability could be improved if a DOI to the paper that presented the tool was provided.</div>
         {% else %}
-            <div class="border-right col-7 mt-1 mb-1"><a href="{{findability.doiLink}}">{{findability.doiLink}}</a></div>
+            <div class="border-right col-7 mt-1 mb-1"><a href="{{findability.shortDoiLink}}">{{findability.doiLink}}</a></div>
         {% endif %}
         <div class="col-1 mt-1 mb-1 text-center">{{findability.doi|mul:5}}%</div>
     </div>
@@ -148,7 +148,7 @@
         {% if reusability.public_repo == 0 %}
             <div class="border-right col-7 text-info mt-1 mb-1">{{reusability.repositoryLink}} Reusability could be improved if a public repository was provided.</div>
         {% else %}
-            <div class="border-right col-7 mt-1 mb-1"><a href="{{reusability.repositoryLink}}">Link provided on website.</a></div>
+            <div class="border-right col-7 mt-1 mb-1"><a href="{{reusability.shortRepoLink}}">Link provided on website.</a></div>
         {% endif %}
         <div class="col-1 mt-1 mb-1 text-center">{{reusability.public_repo|mul:5}}%</div>
     </div>

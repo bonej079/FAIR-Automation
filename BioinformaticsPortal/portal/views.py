@@ -74,9 +74,11 @@ def details(request, id):
                 upFind.downlink = request.POST['downLink']
                 if request.POST['downLink'] == "":
                     upFind.free_down = 0
+                    upFind.shortDownLink = ""
                 else:
                     upFind.free_down = 8
                     score = score + 8
+                    upFind.shortDownLink = getBitlyLink(request.POST["downLink"])
             else:
                 score = score + upFind.free_down
 
@@ -84,9 +86,11 @@ def details(request, id):
                 upFind.doiLink = request.POST['doiLink']
                 if request.POST['doiLink'] == "":
                     upFind.doi = 0
+                    upFind.shortDoiLink = ""
                 else:
                     upFind.doi = 5
                     score = score + 5
+                    upFind.shortDoiLink = getBitlyLink(request.POST["doiLink"])
             else:
                 score = score + upFind.doi
 
@@ -168,9 +172,11 @@ def details(request, id):
                 if request.POST['pubRep'] != upRe.repositoryLink:
                     if request.POST['pubRep'] == "":
                         upRe.public_repo = 0
+                        upRe.shortRepoLink = ""
                     else:
                         upRe.public_repo = 8
                         score = score + 8
+                        upRe.shortRepoLink = getBitlyLink(request.POST["pubRep"])
                 else:
                     score = score + upRe.public_repo
                 if request.POST['documentation'] != upRe.documentation:
@@ -232,9 +238,11 @@ def details(request, id):
                 if request.POST['pubRep'] != upRe.repositoryLink:
                     if request.POST['pubRep'] == "":
                         upRe.public_repo = 0
+                        upRe.shortRepoLink = ""
                     else:
                         upRe.public_repo = 8
                         score = score + 8
+                        upRe.shortRepoLink = getBitlyLink(request.POST["pubRep"])
                 else:
                     score = score + upRe.public_repo
                 if request.POST['documentation'] != upRe.documentation:
@@ -879,20 +887,23 @@ def addTool(request):
                 interoperability = round(interoperability, 2)
                 reusability = ((publicRepoVal + ontologyVal + documentationVal + contactVal + citeVal) / (8+4+4+2+2)) * 100
 
+                doiShort = ""
+                downloadShort =""
+                publicRepoShort = ""
                 if doi:
-                    doi = getBitlyLink(doi)
+                    doiShort = getBitlyLink(doi)
                 if download:
-                    download = getBitlyLink(download)
+                    downloadShort = getBitlyLink(download)
                 if publicRepo:
-                    publicRepo = getBitlyLink(publicRepoVal)
+                    publicRepoShort = getBitlyLink(publicRepoVal)
 
                 tool = Tool.objects.create(tool_name=request.POST['name'], isPrivate=0)
                 tool = Tool.objects.get(tool_name = request.POST['name'])
                 fairScore = FairScore.objects.create(findability=findability, accessibility = accessiblity, interoperability = interoperability, reusability = reusability, tool_id = tool.id)
-                find = Findability.objects.create(free_down=downloadVal, doi=doiVal, description = aboutVal, versions = versVal, tool_id=tool.id, doiLink=doi, downlink=download)
+                find = Findability.objects.create(free_down=downloadVal, doi=doiVal, description = aboutVal, versions = versVal, tool_id=tool.id, doiLink=doi, downlink=download, shortDoiLink=doiShort, shortDownLink=downloadShort)
                 acc = Accessibility.objects.create(api=apiVal, tool_id=tool.id, commandLine=cliVal)
                 interop = Interoperability.objects.create(compatibility=compVal, tool_id=tool.id, macComp=macComp, unixComp=unixComp, winComp=winComp, sourceCode=sourceVal)
-                reuse= Reusability.objects.create(public_repo=publicRepoVal, ontology=ontologyVal, documentation=documentationVal, contact=contactVal, citation=citeVal, tool_id=tool.id, repositoryLink=publicRepo, ontUsed=ontologies, usesOnt=1) 
+                reuse= Reusability.objects.create(public_repo=publicRepoVal, ontology=ontologyVal, documentation=documentationVal, contact=contactVal, citation=citeVal, tool_id=tool.id, repositoryLink=publicRepo, ontUsed=ontologies, usesOnt=1, shortRepoLink=publicRepoShort)
         else:
             tool=""
             try:
@@ -1349,20 +1360,20 @@ def addTool(request):
                 interoperability = round(interoperability, 2)
                 reusability = ((publicRepoVal + ontologyVal + documentationVal + contactVal + citeVal) / (8+4+4+2+2)) * 100
                 tool = Tool.objects.create(tool_name=request.POST['name'], isPrivate=0)
-                tool = Tool.objects.get(tool_name = request.POST['name'])
+                #tool = Tool.objects.get(tool_name = request.POST['name'])
 
                 if doi:
-                    doi = getBitlyLink(doi)
+                    doiShort = getBitlyLink(doi)
                 if download:
-                    download = getBitlyLink(download)
+                    downloadShort = getBitlyLink(download)
                 if publicRepo:
-                    publicRepo = getBitlyLink(publicRepoVal)
+                    publicRepoShort = getBitlyLink(publicRepoVal)
 
                 fairScore = FairScore.objects.create(findability = findability, accessibility = accessiblity, interoperability = interoperability, reusability = reusability, tool_id = tool.id)
-                find = Findability.objects.create(free_down=downloadVal, doi = doiVal, description = aboutVal, versions = versVal, tool_id=tool.id, doiLink=doi, downlink=download)
+                find = Findability.objects.create(free_down=downloadVal, doi = doiVal, description = aboutVal, versions = versVal, tool_id=tool.id, doiLink=doi, downlink=download, shortDoiLink=doiShort, shortDownloadLink=downloadShort)
                 acc = Accessibility.objects.create(api=apiVal, tool_id = tool.id, commandLine=cliVal)
                 interop = Interoperability.objects.create(compatibility = compVal, tool_id=tool.id, macComp=macComp, unixComp=unixComp, winComp=winComp, sourceCode=sourceVal)
-                reuse= Reusability.objects.create(public_repo=publicRepoVal, ontology=ontologyVal, documentation=documentationVal, contact=contactVal, citation=citeVal, tool_id=tool.id, repositoryLink=publicRepo, ontUsed=ontologies, usesOnt=1) 
+                reuse= Reusability.objects.create(public_repo=publicRepoVal, ontology=ontologyVal, documentation=documentationVal, contact=contactVal, citation=citeVal, tool_id=tool.id, repositoryLink=publicRepo, ontUsed=ontologies, usesOnt=1, shortRepoLink=publicRepoShort)
        
         return redirect('details', id=tool.id)
     return render(request, 'portal/add.html')
