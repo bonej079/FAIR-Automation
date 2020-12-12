@@ -428,7 +428,6 @@ def refineReusability(request, id):
     return render(request, 'portal/refine/reusability.html', context)
 
 def getBitlyLink(link):
-    link = "https://doi.org/10.1002/cpet.8"
     headers = {
         'Authorization': 'Bearer b182461614aa63cf46f8d154546767416ad8d747',
         'Content-Type': 'application/json',
@@ -895,7 +894,7 @@ def addTool(request):
                 if download:
                     downloadShort = getBitlyLink(download)
                 if publicRepo:
-                    publicRepoShort = getBitlyLink(publicRepoVal)
+                    publicRepoShort = getBitlyLink(publicRepo)
 
                 tool = Tool.objects.create(tool_name=request.POST['name'], isPrivate=0)
                 tool = Tool.objects.get(tool_name = request.POST['name'])
@@ -1367,7 +1366,7 @@ def addTool(request):
                 if download:
                     downloadShort = getBitlyLink(download)
                 if publicRepo:
-                    publicRepoShort = getBitlyLink(publicRepoVal)
+                    publicRepoShort = getBitlyLink(publicRepo)
 
                 fairScore = FairScore.objects.create(findability = findability, accessibility = accessiblity, interoperability = interoperability, reusability = reusability, tool_id = tool.id)
                 find = Findability.objects.create(free_down=downloadVal, doi = doiVal, description = aboutVal, versions = versVal, tool_id=tool.id, doiLink=doi, downlink=download, shortDoiLink=doiShort, shortDownloadLink=downloadShort)
