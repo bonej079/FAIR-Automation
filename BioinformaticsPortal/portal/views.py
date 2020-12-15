@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from portal.models import FairScore, Tool, Findability, Accessibility, Interoperability, Reusability, Pipeline, PipelineTools
+from portal.models import FairScore, Tool, Findability, Accessibility, Interoperability, Reusability, Pipeline, PipelineTools, Publication
 from django.contrib.auth.decorators import login_required
 import yaml
 from django.contrib.staticfiles.storage import staticfiles_storage
@@ -15,7 +15,10 @@ def index(request):
     })
 
 def publications(request):
-	return render(request, 'portal/publications.html', {})
+	context = {
+		'publications': Publication.objects.all()
+	}
+	return render(request, 'portal/publications.html', context)
 
 def tools(request):
     if request.method == "POST":

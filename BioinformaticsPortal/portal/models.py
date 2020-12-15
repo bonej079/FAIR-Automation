@@ -66,3 +66,8 @@ class PipelineTools(models.Model):
     toolAfter = models.ForeignKey(Tool, related_name="tool_after", on_delete = models.CASCADE, null=True)
     position = models.IntegerField(null=True)
     branch = models.IntegerField(default=0)
+
+class Publication(models.Model):
+    name = models.CharField(max_length = 400)
+    authors = models.CharField(max_length = 400) #Should we create an Author class ?
+    link = models.CharField(max_length = 400)

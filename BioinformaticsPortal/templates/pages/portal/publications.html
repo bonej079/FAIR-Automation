@@ -2,7 +2,61 @@
 {% load socialaccount %}
 
 {% block content %}
+
+<style>
+table{
+	border-collapse:collapse;
+	border:1px solid black;
+}
+
+table td{
+	border:1px solid black;
+}
+
+#pTable{
+	width: 80%;
+	text-align: center;
+}
+
+#controls{
+	margin-bottom: 10px;
+}
+</style>
+
 <div class="container">
-	Publications
+	<div id="controls">
+    {% if user.is_authenticated %}
+			<button>Add publication</button>
+		{% endif %}
+	</div>
+	<div class = "tablediv">
+		<table id="pTable">
+			<tr style="font-weight: bold">
+				<td>
+					Name
+				</td>
+				<td>
+					Author/s
+				</td>
+				<td>
+					Link
+				</td>
+			</tr>
+			{% for publication in publications %}
+			<tr>
+				<td>
+					{{publication.name}}
+				</td>
+				<td>
+					{{publication.authors}}
+				</td>
+				<td>
+					<a href="{{publication.link}}">{{publication.link}}</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
 </div>
 {% endblock %}
+
