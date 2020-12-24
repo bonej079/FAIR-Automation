@@ -20,6 +20,28 @@ def publications(request):
 	}
 	return render(request, 'portal/publications.html', context)
 
+def addPublication(request):
+	if request.POST:
+		publication_name=request.POST['name']
+		publication_author=request.POST['author']
+		publication_link=request.POST['link']
+		publication = Publication.objects.create(name=publication_name, authors=publication_author, link=publication_link)
+		#TODO: if combination of name, authors, link already exists, show error
+		#TODO: perhaps its better to use a forms class
+		#for error use something like this, or else simply say success and do not add object
+		#context={
+		# 'action': 'postform'
+		# 'result': 'error - publication already exists'
+		#}
+
+		#return render(request, 'portal/publications.html', context)
+		return redirect('../publications/')
+	context = {
+		'action': 'fillform',
+		'publications': Publication.objects.all()
+	}
+	return render(request, 'portal/publications/add.html', context)
+
 def tools(request):
     if request.method == "POST":
         pipeline_id = list(request.POST.keys())[2]

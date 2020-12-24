@@ -26,7 +26,7 @@ table td{
 <div class="container">
 	<div id="controls">
     {% if user.is_authenticated %}
-			<button>Add publication</button>
+      <a class="nav-link" href="{% url 'add_publication' %}"><button>Add publication</button></a>
 		{% endif %}
 	</div>
 	<div class = "tablediv">
