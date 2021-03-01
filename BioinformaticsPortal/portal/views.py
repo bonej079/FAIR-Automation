@@ -9,6 +9,8 @@ from selenium import webdriver
 from crossref.restful import Works, Journals
 import requests
 import json
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
 
 def index(request):
     return render(request, 'portal/index.html', {
@@ -78,7 +80,7 @@ def details(request, id):
                 else:
                     upFind.free_down = 8
                     score = score + 8
-                    upFind.shortDownLink = getBitlyLink(request.POST["downLink"])
+                    upFind.shortDownLink = getBitlyLink(request.POST['downLink'])
             else:
                 score = score + upFind.free_down
 
@@ -90,7 +92,7 @@ def details(request, id):
                 else:
                     upFind.doi = 5
                     score = score + 5
-                    upFind.shortDoiLink = getBitlyLink(request.POST["doiLink"])
+                    upFind.shortDoiLink = getBitlyLink(request.POST['doiLink'])
             else:
                 score = score + upFind.doi
 
@@ -427,12 +429,25 @@ def refineReusability(request, id):
     }
     return render(request, 'portal/refine/reusability.html', context)
 
+def is_url(link):
+    link = link.strip()
+    validate = URLValidator()
+    try:
+        validate(link)
+        return True
+    except ValidationError:
+        return False
+
 def getBitlyLink(link):
+    if not is_url(link):
+        return ""
+
     headers = {
         'Authorization': 'Bearer b182461614aa63cf46f8d154546767416ad8d747',
         'Content-Type': 'application/json',
     }
-    data = '{ "long_url": "' + link + '", "domain": "bit.ly" }'
+
+    data = json.dumps({"long_url": link.strip(), "domain": "bit.ly"})
     response = requests.post('https://api-ssl.bitly.com/v4/shorten', headers=headers, data=data)
     response_dict = json.loads(response.text)
     return response_dict["link"]
@@ -450,7 +465,7 @@ def addTool(request):
             if not tool:
                 active_ontologies = []
                 # with open("C:/Users/Nigel/Desktop/FAIR-Automation/BioinformaticsPortal/portal/static/data/ontologies.yml", 'r') as ont:
-                with open("/media/jbon4/Data/Development/python/Bioinformatics Portal/FAIR-Automation/BioinformaticsPortal/static/data/ontologies.yml", 'r') as ont:
+                with open("D:\Programming\Tools\Fork\FAIR-Automation\BioinformaticsPortal\portal\ontologies.yml", 'r') as ont:
                     try:
                         content = yaml.load(ont)
                         for item in content.items():
@@ -799,7 +814,7 @@ def addTool(request):
                             if i > 10:
                                 break
                     else:
-                        w1 = works.query(title=search_phrase).filter(type="journal-article").sort("relevance")
+                        w1 = works.query(author=search_phrase).filter(type="journal-article").sort("relevance")
                         for item in w1:
                             i=i+1
                             if search_phrase in item['title']:
@@ -912,7 +927,7 @@ def addTool(request):
             if not tool:
                 active_ontologies = []
                 # with open("C:/Users/Nigel/Desktop/FAIR-Automation/BioinformaticsPortal/portal/static/data/ontologies.yml", 'r') as ont:
-                with open("/media/jbon4/Data/Development/python/Bioinformatics Portal/FAIR-Automation/BioinformaticsPortal/static/data/ontologies.yml", 'r') as ont:
+                with open("D:\Programming\Tools\Fork\FAIR-Automation\BioinformaticsPortal\portal\ontologies.yml", 'r') as ont:
                     try:
                         content = yaml.load(ont)
                         for item in content.items():
