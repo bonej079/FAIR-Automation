@@ -11,6 +11,7 @@ import requests
 import json
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
+from django.conf import settings
 
 def index(request):
     return render(request, 'portal/index.html', {
@@ -429,6 +430,7 @@ def refineReusability(request, id):
     }
     return render(request, 'portal/refine/reusability.html', context)
 
+
 def is_url(link):
     link = link.strip()
     validate = URLValidator()
@@ -438,19 +440,26 @@ def is_url(link):
     except ValidationError:
         return False
 
+
 def getBitlyLink(link):
     if not is_url(link):
         return ""
 
+    token = settings.BITLY_TOKEN
+
     headers = {
-        'Authorization': 'Bearer b182461614aa63cf46f8d154546767416ad8d747',
+        'Authorization': f'Bearer {token}',
         'Content-Type': 'application/json',
     }
 
     data = json.dumps({"long_url": link.strip(), "domain": "bit.ly"})
     response = requests.post('https://api-ssl.bitly.com/v4/shorten', headers=headers, data=data)
     response_dict = json.loads(response.text)
-    return response_dict["link"]
+
+    if "errors" in response_dict:
+        raise Exception(response.text)
+    else:
+        return response_dict["link"]
 
 
 def addTool(request):

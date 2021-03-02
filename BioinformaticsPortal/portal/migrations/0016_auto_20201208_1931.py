@@ -2,13 +2,16 @@
 from django.db import migrations, models
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
+from django.conf import settings
 import requests
 import json
 
 
 def getlink(link):
+    token = settings.BITLY_TOKEN
+
     headers = {
-        'Authorization': 'Bearer b182461614aa63cf46f8d154546767416ad8d747',
+        'Authorization': f'Bearer {token}',
         'Content-Type': 'application/json',
     }
 
