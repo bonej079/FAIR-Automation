@@ -157,6 +157,8 @@ AUTH_USER_MODEL = 'users.PortalUser'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
+## All Auth
+
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
@@ -164,11 +166,24 @@ AUTHENTICATION_BACKENDS = (
 
 SITE_ID = 1
 
-## All Auth
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_USER_DISPLAY = lambda user: user.username if user.first_name is '' and user.last_name is '' else user.get_full_name()
 
 
 #Email SMTP Setup
@@ -179,3 +194,4 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = "autofairbioinfp@gmail.com"
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = "yywiojazjrcwdgjj"
+
