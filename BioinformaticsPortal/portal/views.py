@@ -881,10 +881,10 @@ def addTool(request):
                 tool = Tool.objects.create(tool_name=request.POST['name'], isPrivate=0)
                 tool = Tool.objects.get(tool_name = request.POST['name'])
                 fairScore = FairScore.objects.create(findability = findability, accessibility = accessiblity, interoperability = interoperability, reusability = reusability, tool_id = tool.id)
-                find = Findability.objects.create(free_down=downloadVal, doi = doiVal, description = aboutVal, versions = versVal, tool_id=tool.id, doiLink=doi, downlink=download)
+                find = Findability.objects.create(free_down=downloadVal, doi = doiVal, description = aboutVal, versions = versVal, tool_id=tool.id, doiLink=doi.replace("\r", "").replace("\n", "").strip(), downlink=download.replace("\r", "").replace("\n", "").strip())
                 acc = Accessibility.objects.create(api=apiVal, tool_id = tool.id, commandLine=cliVal)
                 interop = Interoperability.objects.create(compatibility = compVal, tool_id=tool.id, macComp=macComp, unixComp=unixComp, winComp=winComp, sourceCode=sourceVal)
-                reuse= Reusability.objects.create(public_repo=publicRepoVal, ontology=ontologyVal, documentation=documentationVal, contact=contactVal, citation=citeVal, tool_id=tool.id, repositoryLink=publicRepo, ontUsed=ontologies, usesOnt=1) 
+                reuse= Reusability.objects.create(public_repo=publicRepoVal, ontology=ontologyVal, documentation=documentationVal, contact=contactVal, citation=citeVal, tool_id=tool.id, repositoryLink=publicRepo.replace("\r", "").replace("\n", "").strip(), ontUsed=ontologies, usesOnt=1)
         else:
             tool=""
             try:
@@ -1343,10 +1343,10 @@ def addTool(request):
                 tool = Tool.objects.create(tool_name=request.POST['name'], isPrivate=0)
                 tool = Tool.objects.get(tool_name = request.POST['name'])
                 fairScore = FairScore.objects.create(findability = findability, accessibility = accessiblity, interoperability = interoperability, reusability = reusability, tool_id = tool.id)
-                find = Findability.objects.create(free_down=downloadVal, doi = doiVal, description = aboutVal, versions = versVal, tool_id=tool.id, doiLink=doi, downlink=download)
+                find = Findability.objects.create(free_down=downloadVal, doi = doiVal, description = aboutVal, versions = versVal, tool_id=tool.id, doiLink=doi.replace("\r", "").replace("\n", "").strip(), downlink=download.replace("\r", "").replace("\n", "").strip())
                 acc = Accessibility.objects.create(api=apiVal, tool_id = tool.id, commandLine=cliVal)
                 interop = Interoperability.objects.create(compatibility = compVal, tool_id=tool.id, macComp=macComp, unixComp=unixComp, winComp=winComp, sourceCode=sourceVal)
-                reuse= Reusability.objects.create(public_repo=publicRepoVal, ontology=ontologyVal, documentation=documentationVal, contact=contactVal, citation=citeVal, tool_id=tool.id, repositoryLink=publicRepo, ontUsed=ontologies, usesOnt=1) 
+                reuse= Reusability.objects.create(public_repo=publicRepoVal, ontology=ontologyVal, documentation=documentationVal, contact=contactVal, citation=citeVal, tool_id=tool.id, repositoryLink=publicRepo.replace("\r", "").replace("\n", "").strip(), ontUsed=ontologies, usesOnt=1)
        
         return redirect('details', id=tool.id)
     return render(request, 'portal/add.html')
