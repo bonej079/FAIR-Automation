@@ -8,6 +8,7 @@
   <title>{% block title %} Title {% endblock %}</title>
   {% compress css %}
     <link rel="stylesheet" type="text/x-scss" href="{% static 'sass/_university_style.scss' %}">
+      {% block styles %}{% endblock %}
   {% endcompress %}
 </head>
 <body>

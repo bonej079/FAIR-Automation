@@ -184,7 +184,7 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_USER_DISPLAY = lambda user: user.username if user.first_name is '' and user.last_name is '' else user.get_full_name()
-
+ACCOUNT_EMAIL_SUBJECT_PREFIX = '[AutoFAIR] '
 
 #Email SMTP Setup
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
@@ -193,5 +193,5 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "autofairbioinfp@gmail.com"
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = "yywiojazjrcwdgjj"
+EMAIL_HOST_PASSWORD = "etdqpfyrmoiolhmk"
 

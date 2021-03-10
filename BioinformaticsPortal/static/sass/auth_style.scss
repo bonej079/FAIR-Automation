@@ -1,0 +1,41 @@
+.google, .google:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.socialaccount_ballot {
+  padding-top: 25px;
+  padding-bottom: 25px;
+  min-width: fit-content;
+  max-width: 25%;
+}
+
+.or-text {
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+
+.form-button {
+  margin-bottom: 20px;
+  width: 80%;
+  align-self: center;
+}
+
+.auth-form {
+  margin-top: 20px;
+  width: fit-content;
+}
+
+.social_button {
+  @extend .form-button;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.reset-div {
+  margin-top: 10px;
+}
+
+.reset-div p:last-child {
+  margin-top: 20px;
+}

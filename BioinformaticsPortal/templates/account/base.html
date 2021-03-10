@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load compress %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/x-scss" href="{% static 'sass/auth_style.scss' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% block container_content %}{% endblock %}
+    </div>
+{% endblock %}

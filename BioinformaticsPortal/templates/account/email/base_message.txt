@@ -1,0 +1,10 @@
+{% load i18n %}
+{% load account %}
+{% load socialaccount %}
+
+Hi {% user_display user as user_display %}!
+
+{% block content %}{% endblock %}
+
+Thanks for your time,
+AutoFAIR Team
