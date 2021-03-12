@@ -93,7 +93,6 @@ def details(request, id):
                 else:
                     upFind.doi = 5
                     score = score + 5
-                    upFind.shortDoiLink = getBitlyLink(request.POST['doiLink'])
             else:
                 score = score + upFind.doi
 
@@ -814,11 +813,11 @@ def addTool(request):
                     works = Works()
                     i=0
                     if doiTitle:
-                        w1 = works.query(title=doiTitle).filter(type="journal-article").sort('relevance')
+                        w1 = works.query(doiTitle).filter(type="journal-article").sort('relevance')
                         for item in w1:
                             i=i+1
                             if item['title'] is doiTitle:
-                                doi = item['DOI']
+                                doi = item['URL']
                                 break
                             if i > 10:
                                 break
@@ -827,7 +826,7 @@ def addTool(request):
                         for item in w1:
                             i=i+1
                             if search_phrase in item['title']:
-                                doi = item['DOI']
+                                doi = item['URL']
                                 break
                             if i > 10:
                                 break
@@ -913,8 +912,6 @@ def addTool(request):
                 doiShort = ""
                 downloadShort =""
                 publicRepoShort = ""
-                if doi:
-                    doiShort = getBitlyLink(doi)
                 if download:
                     downloadShort = getBitlyLink(download)
                 if publicRepo:
@@ -1288,20 +1285,20 @@ def addTool(request):
                     works = Works()
                     i=0
                     if doiTitle:
-                        w1 = works.query(title=doiTitle).filter(type="journal-article").sort('relevance')
+                        w1 = works.query(doiTitle).filter(type="journal-article").sort('relevance')
                         for item in w1:
                             i=i+1
                             if item['title'] is doiTitle:
-                                doi = item['DOI']
+                                doi = item['URL']
                                 break
                             if i > 10:
                                 break
                     else:
-                        w1 = works.query(title=search_phrase).filter(type="journal-article").sort("relevance")
+                        w1 = works.query(search_phrase).filter(type="journal-article").sort("relevance")
                         for item in w1:
                             i=i+1
                             if search_phrase in item['title']:
-                                doi = item['DOI']
+                                doi = item['URL']
                                 break
                             if i > 10:
                                 break
@@ -1385,8 +1382,6 @@ def addTool(request):
                 tool = Tool.objects.create(tool_name=request.POST['name'], isPrivate=0)
                 #tool = Tool.objects.get(tool_name = request.POST['name'])
 
-                if doi:
-                    doiShort = getBitlyLink(doi)
                 if download:
                     downloadShort = getBitlyLink(download)
                 if publicRepo:

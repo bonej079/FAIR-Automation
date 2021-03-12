@@ -44,11 +44,6 @@ def shortenlinks(apps, schema_editor):
         obj.save()
 
     for obj in findability.objects.all():
-        if is_url(obj.doiLink):
-            obj.shortDoiLink = getlink(obj.doiLink)
-        else:
-            obj.shortDoiLink = ""
-
         if is_url(obj.downlink):
             obj.shortDownLink = getlink(obj.downlink)
         else:
