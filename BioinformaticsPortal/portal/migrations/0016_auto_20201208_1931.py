@@ -61,11 +61,6 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='findability',
-            name='shortDoiLink',
-            field=models.CharField(max_length=35, null=True),
-        ),
-        migrations.AddField(
-            model_name='findability',
             name='shortDownLink',
             field=models.CharField(max_length=35, null=True),
         ),

@@ -32,8 +32,6 @@
         <div class="col-4 border-right mt-1 mb-1">DOI</div>
         {% if findability.doi == 0 %}
             <div class="border-right col-7 text-info mt-1 mb-1">No DOI found. Findability could be improved if a DOI to the paper that presented the tool was provided.</div>
-        {% elif findability.shortDoiLink %}
-            <div class="border-right col-7 mt-1 mb-1"><a href="{{findability.shortDoiLink}}">{{findability.doiLink}}</a></div>
         {% else %}
             <div class="border-right col-7 mt-1 mb-1"><a href="{{findability.doiLink}}">{{findability.doiLink}}</a></div>
         {% endif %}

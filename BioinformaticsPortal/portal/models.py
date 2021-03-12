@@ -20,7 +20,6 @@ class Findability(models.Model):
     descText = models.TextField()
     versions = models.FloatField()
     shortDownLink = models.CharField(max_length=35, null=True)
-    shortDoiLink = models.CharField(max_length=35, null=True)
 
 class Accessibility(models.Model):
     tool = models.ForeignKey(Tool, on_delete = models.CASCADE)
