@@ -39,8 +39,10 @@
                   action="{% url 'account_login' %}">
                 {% csrf_token %}
 
-                <div class="auth-field">
-                    {{ form.login.label_tag }}
+                <div class="auth-field mb-2">
+                    <div class="required">
+                        {{ form.login.label_tag }}
+                    </div>
                     {{ form.login }}
                     {{ form.login.errors }}
                     {% if form.login.help_text %}
@@ -48,15 +50,17 @@
                     {% endif %}
                 </div>
 
-                <div class="auth-field login-password">
-                    {{ form.password.label_tag }}
+                <div class="auth-field login-password mb-2">
+                    <div class="required">
+                        {{ form.password.label_tag }}
+                    </div>
                     {{ form.password }}
                     {{ form.password.errors }}
                     {% if form.password.help_text %}
                         <p class="help">{{ form.password.help_text|safe }}</p>
                     {% endif %}
 
-                    <span>
+                    <span class="remember-field">
                         {{ form.remember.label_tag }}
                         {{ form.remember }}
                         {{ form.remember.errors }}
@@ -69,7 +73,8 @@
                 {% if redirect_field_value %}
                     <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
                 {% endif %}
-                <button class="form-button btn btn-primary" type="submit">{% trans "Sign In" %}</button>
+                <button class="form-button btn btn-outline-primary rounded-0"
+                        type="submit">{% trans "Sign In" %}</button>
                 <a class="button secondaryAction"
                    href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
                 <div>

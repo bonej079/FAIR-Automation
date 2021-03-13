@@ -23,7 +23,9 @@
 
                 {% for field in form %}
                     <div class="auth-field">
-                        {{ field.label_tag }}
+                        <div class="required">
+                            {{ field.label_tag }}
+                        </div>
                         {{ field }}
                         {{ field.errors }}
 
@@ -36,7 +38,7 @@
                 {% if redirect_field_value %}
                     <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
                 {% endif %}
-                <button class="form-button btn btn-primary" type="submit">{% trans "Sign Up" %}</button>
+                <button class="form-button btn btn-outline-primary rounded-0" type="submit">{% trans "Sign Up" %}</button>
 
                 <p>{% blocktrans %}Already have an account? <a href="{{ login_url }}">Sign In</a>.{% endblocktrans %}</p>
             </form>

@@ -8,15 +8,15 @@ nonetheless for future use -->
     {% if provider.id == "openid" %}
         {% for brand in provider.get_brands %}
             <li>
-                <a class="socialaccount_provider {{provider.id}} {{brand.id}}"
+                <a class="socialaccount_provider {{ provider.id }} {{ brand.id }}"
                    href="{% provider_login_url provider.id openid=brand.openid_url process=process %}"
-                >{{brand.name}}</a>
+                >{{ brand.name }}</a>
             </li>
         {% endfor %}
     {% endif %}
 
-    <div class="btn btn-primary social_button">
-        <a title="Continue with {{provider.name}}" class="socialaccount_provider {{provider.id}}"
-           href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">Continue with {{provider.name}}</a>
-    </div>
+    <a title="Continue with {{ provider.name }}"
+       class="btn btn-outline-primary social_button rounded-0 socialaccount_provider {{ provider.id }}"
+       href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">Continue
+        with {{ provider.name }}</a>
 {% endfor %}

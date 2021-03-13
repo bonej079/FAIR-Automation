@@ -1,7 +1,4 @@
-.google, .google:hover {
-  color: white;
-  text-decoration: none;
-}
+@import "colours";
 
 .socialaccount_ballot {
   padding-top: 25px;
@@ -25,12 +22,6 @@
 
 .no-error-spacing {
   margin-top: 10px;
-}
-
-.social_button {
-  @extend .form-button;
-  width: 100%;
-  margin-bottom: 0;
 }
 
 .reset-div {
@@ -63,4 +54,22 @@
   margin-bottom: 0;
   padding-left: 0;
   margin-top: 5px;
+}
+
+.required::after {
+  content: ' *';
+  color: red;
+}
+
+.input-width-auto label.required::after{
+  content: '';
+}
+
+.auth-field input {
+  padding: 10px 15px;
+  border: 1px solid black;
+}
+
+.remember-field, .remember-field input[type=checkbox]{
+  vertical-align: -2px;
 }
