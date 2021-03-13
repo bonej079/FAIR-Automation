@@ -3,6 +3,13 @@
 .socialaccount_ballot {
   padding-top: 25px;
   padding-bottom: 25px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.or-container{
+  width: 100%;
 }
 
 .or-text {
@@ -72,4 +79,8 @@
 
 .remember-field, .remember-field input[type=checkbox]{
   vertical-align: -2px;
+}
+
+.auth-form {
+  max-width: 500px;
 }

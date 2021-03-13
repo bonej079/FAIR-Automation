@@ -10,78 +10,75 @@
         <h1>{% trans "Sign In" %}</h1>
     </div>
 
-    <div class="d-flex flex-column align-items-center">
+    {% get_providers as socialaccount_providers %}
 
-        {% get_providers as socialaccount_providers %}
+    <div class="d-flex flex-column align-items-center w-90 m-auto">
+        <div class="socialaccount_ballot">
+            <div class="socialaccount_providers">
+                {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+            </div>
+        </div>
 
-        <div class="d-flex flex-column align-items-center w-100">
-            <div class="socialaccount_ballot">
-                <div class="socialaccount_providers">
-                    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+        {% include "socialaccount/snippets/login_extra.html" %}
+
+        <div class="or-container d-flex flex-row justify-content-center">
+            <span class="or-text">OR</span>
+        </div>
+
+        {% if form.non_field_errors %}
+            <div class="error-spacing">
+                {{ form.non_field_errors }}
+            </div>
+        {% else %}
+            <div class="no-error-spacing"></div>
+        {% endif %}
+
+        <form class="d-flex flex-column align-items-center w-100 auth-form" method="POST"
+              action="{% url 'account_login' %}">
+            {% csrf_token %}
+
+            <div class="auth-field mb-2">
+                <div class="required">
+                    {{ form.login.label_tag }}
                 </div>
+                {{ form.login }}
+                {{ form.login.errors }}
+                {% if form.login.help_text %}
+                    <p class="help">{{ form.login.help_text|safe }}</p>
+                {% endif %}
             </div>
 
-            {% include "socialaccount/snippets/login_extra.html" %}
-
-            <div class="or-container d-flex flex-row justify-content-center">
-                <span class="or-text">OR</span>
-            </div>
-
-            {% if form.non_field_errors %}
-                <div class="error-spacing">
-                    {{ form.non_field_errors }}
+            <div class="auth-field login-password mb-2">
+                <div class="required">
+                    {{ form.password.label_tag }}
                 </div>
-            {% else %}
-                <div class="no-error-spacing"></div>
-            {% endif %}
+                {{ form.password }}
+                {{ form.password.errors }}
+                {% if form.password.help_text %}
+                    <p class="help">{{ form.password.help_text|safe }}</p>
+                {% endif %}
 
-            <form class="d-flex flex-column align-items-center col-md-3" method="POST"
-                  action="{% url 'account_login' %}">
-                {% csrf_token %}
-
-                <div class="auth-field mb-2">
-                    <div class="required">
-                        {{ form.login.label_tag }}
-                    </div>
-                    {{ form.login }}
-                    {{ form.login.errors }}
-                    {% if form.login.help_text %}
-                        <p class="help">{{ form.login.help_text|safe }}</p>
-                    {% endif %}
-                </div>
-
-                <div class="auth-field login-password mb-2">
-                    <div class="required">
-                        {{ form.password.label_tag }}
-                    </div>
-                    {{ form.password }}
-                    {{ form.password.errors }}
-                    {% if form.password.help_text %}
-                        <p class="help">{{ form.password.help_text|safe }}</p>
-                    {% endif %}
-
-                    <span class="remember-field">
+                <span class="remember-field">
                         {{ form.remember.label_tag }}
                         {{ form.remember }}
                         {{ form.remember.errors }}
-                        {% if form.remember.help_text %}
-                            <p class="help">{{ form.remember.help_text|safe }}</p>
-                        {% endif %}
+                    {% if form.remember.help_text %}
+                        <p class="help">{{ form.remember.help_text|safe }}</p>
+                    {% endif %}
                     </span>
-                </div>
+            </div>
 
-                {% if redirect_field_value %}
-                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-                {% endif %}
-                <button class="form-button btn btn-outline-primary rounded-0"
-                        type="submit">{% trans "Sign In" %}</button>
-                <a class="button secondaryAction"
-                   href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-                <div>
-                    <span>Don't have an account?</span>
-                    <a href="{{ signup_url }}">Sign Up</a>
-                </div>
-            </form>
-        </div>
+            {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+            {% endif %}
+            <button class="form-button btn btn-outline-primary rounded-0"
+                    type="submit">{% trans "Sign In" %}</button>
+            <a class="button secondaryAction"
+               href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+            <div>
+                <span>Don't have an account?</span>
+                <a href="{{ signup_url }}">Sign Up</a>
+            </div>
+        </form>
     </div>
 {% endblock %}
