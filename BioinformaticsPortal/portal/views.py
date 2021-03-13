@@ -383,7 +383,7 @@ def privateDetails(request, id):
         return render(request, 'portal/tools/private.html', context)
 
 @login_required(login_url='/accounts/login/')
-@permission_required('change_tool', raise_exception=True)
+@permission_required('portal.change_tool', raise_exception=True)
 def refineFindability(request, id):
     tool = FairScore.objects.select_related('tool').get(tool_id=id)
     findability = Findability.objects.get(tool_id=id)
@@ -395,7 +395,7 @@ def refineFindability(request, id):
     return render(request, 'portal/refine/findability.html', context)
 
 @login_required(login_url='/accounts/login/')
-@permission_required('change_tool', raise_exception=True)
+@permission_required('portal.change_tool', raise_exception=True)
 def refineAccessibility(request, id):
     tool = FairScore.objects.select_related('tool').get(tool_id=id)
     accessibility = Accessibility.objects.get(tool_id=id)
@@ -407,7 +407,7 @@ def refineAccessibility(request, id):
     return render(request, 'portal/refine/accessibility.html', context)
 
 @login_required(login_url='/accounts/login/')
-@permission_required('change_tool', raise_exception=True)
+@permission_required('portal.change_tool', raise_exception=True)
 def refineInteroperability(request, id):
     tool = FairScore.objects.select_related('tool').get(tool_id=id)
     interoperability = Interoperability.objects.get(tool_id=id)
@@ -419,7 +419,7 @@ def refineInteroperability(request, id):
     return render(request, 'portal/refine/interoperability.html', context)
 
 @login_required(login_url='/accounts/login/')
-@permission_required('change_tool', raise_exception=True)
+@permission_required('portal.change_tool', raise_exception=True)
 def refineReusability(request, id):
     tool = FairScore.objects.select_related('tool').get(tool_id=id)
     reusability = Reusability.objects.get(tool_id=id)
@@ -431,7 +431,7 @@ def refineReusability(request, id):
     return render(request, 'portal/refine/reusability.html', context)
 
 @login_required(login_url='/accounts/login/')
-@permission_required('change_tool', raise_exception=True)
+@permission_required('portal.add_tool', raise_exception=True)
 def addTool(request):
     if request.POST:
         print(request.POST)
