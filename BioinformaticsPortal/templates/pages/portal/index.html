@@ -6,7 +6,14 @@
 <div class="container">
   {% if user.is_authenticated %}
     Hi {% user_display user %}!
-    <p><a href="{% url 'logout' %}">logout</a></p>
+    <form method="post" style="display: inline-block" action="{% url 'account_logout' %}">
+      {% csrf_token %}
+      {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+      {% endif %}
+      <button class="logout" type="submit">Logout</button>
+    </form>
+
   {% else %}
     <p>You are not logged in</p>
     <a href="{% url 'account_signup' %}">Sign Up</a></p>

@@ -187,6 +187,7 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_EMAIL_SUBJECT_PREFIX = '[AutoFAIR] '
 ACCOUNT_USER_DISPLAY = lambda user: user.get_full_name()
+ACCOUNT_LOGOUT_REDIRECT_URL ="/portal/home"
 
 #Turns off email verification for social accounts only since google accounts would already be email verified
 #Might need to turn off if we implement other social account providers later such as Facebook which might not have a verified email

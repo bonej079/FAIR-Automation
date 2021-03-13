@@ -1,3 +1,19 @@
+@import 'colours';
+
 .fit {
   width: fit-content;
+}
+
+button.logout {
+  border:none;
+  color: #ba0c2f;
+  display: inline-block;
+  background-color: transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+button.logout:focus, button.logout:hover {
+  text-decoration: underline;
+  color: #72071d;
 }
