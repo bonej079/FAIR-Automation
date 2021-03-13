@@ -53,7 +53,10 @@
         {% endif %}
         <div class="col-1 mt-1 mb-1 text-center">{{findability.versions|mul:5}}%</div>
     </div>
-    <a href="/portal/refine/findability/{{tool.id}}">Refine Findability</a>
+
+    {% if user.is_authenticated and perms.portal.change_tool %}
+        <a href="/portal/refine/findability/{{tool.id}}">Refine Findability</a>
+    {% endif %}
 
     <br><br>
 
@@ -83,7 +86,10 @@
         {% endif %}
         <div class="col-1 mt-1 mb-1 text-center">{{accessibility.commandLine|mul:10}}%</div>
     </div>
-    <a href="/portal/refine/accessibility/{{tool.id}}">Refine Accessibilitiy</a>
+
+    {% if user.is_authenticated and perms.portal.change_tool %}
+        <a href="/portal/refine/accessibility/{{tool.id}}">Refine Accessibilitiy</a>
+    {% endif %}
 
     <br><br>
 
@@ -131,8 +137,11 @@
         {% endif %}
         <div class="col-1 mt-1 mb-1 text-center">{{interoperability.sourceCode|mul:10}}%</div>
     </div>
-    <a href="/portal/refine/interoperability/{{tool.id}}">Refine Interoperability</a>
-    
+
+    {% if user.is_authenticated and perms.portal.change_tool %}
+        <a href="/portal/refine/interoperability/{{tool.id}}">Refine Interoperability</a>
+    {% endif %}
+
     <br><br>
 
     <div class="row border">
@@ -198,7 +207,10 @@
         {% endif %}
         <div class="col-1 mt-1 mb-1 text-center">{{reusability.citation|mul:5}}%</div>
     </div>
-    <a href="/portal/refine/reusability/{{tool.id}}">Refine Reusability</a>
+
+    {% if user.is_authenticated and perms.portal.change_tool %}
+        <a href="/portal/refine/reusability/{{tool.id}}">Refine Reusability</a>
+    {% endif %}
 </div>
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>

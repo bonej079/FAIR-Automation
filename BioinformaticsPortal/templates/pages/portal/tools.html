@@ -4,74 +4,109 @@
 
 
 {% block content %}
-<div class="container">
-    {% if user.is_authenticated %}
-    <h3>Private Tools</h3> 
-        {% if private %}
+    <div class="container">
+        {% if user.is_authenticated %}
+            <h3>Private Tools</h3>
+            {% if private %}
+                <div class="row border border-primary">
+                    <div class="col-1 border-right border-primary"></div>
+                    <div class="col-2 border-right border-primary text-center"
+                         style="padding-bottom:3px; padding-top:2px;">Tool Name
+                    </div>
+                    <div class="col-2 border-right border-primary text-center"
+                         style="padding-bottom:3px; padding-top:2px;">Findability
+                    </div>
+                    <div class="col-2 border-right border-primary text-center"
+                         style="padding-bottom:3px; padding-top:2px;">Accessibility
+                    </div>
+                    <div class="col-2 border-right border-primary text-center"
+                         style="padding-bottom:3px; padding-top:2px;">Interoperability
+                    </div>
+                    <div class="col-2 border-right border-primary text-center"
+                         style="padding-bottom:3px; padding-top:2px;">Reusability
+                    </div>
+                    <div class="col-1"></div>
+                </div>
+                {% for tool in private %}
+                    <div class="row border border-secondary border-top-0 ">
+                        <div class="col-1 border-right mt-1 mb-1"><img src="{% static 'imgs/' %}private.png" width=40
+                                                                       height=40></div>
+                        <div class="col-2 border-right mt-1 mb-1" style="padding-top:7px;"><a
+                                href="private/{{ tool.id }}">{{ tool.tool_name }}</a></div>
+                        <div class="col-2 border-right mt-1 mb-1" score="0" id="findability">0%</div>
+                        <div class="col-2 border-right mt-1 mb-1" score="0" id="accessibility">0%</div>
+                        <div class="col-2 border-right mt-1 mb-1" score="0" id="interoperability">0%</div>
+                        <div class="col-2 border-right mt-1 mb-1" score="0" id="reusability">0%</div>
+                        <div class="col-1 mt-1 mb-1"><a href="add/{{ tool.id }}">Add to Pipeline</a></div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="row border">
+                    <div class="col mt-1 mb-1">You do not have any private tools.</div>
+                </div>
+            {% endif %}
+            <a href="">Add private tool</a>
+            <br>
+            <br>
+            <h3 class="float-left">Public Tools</h3>
+            {% if perms.portal.add_tool %}
+                <a class="float-right mt-4" href="/portal/add">Add tool</a>
+            {% endif %}
+            <br/><br/>
+
+        {% endif %}
+
         <div class="row border border-primary">
             <div class="col-1 border-right border-primary"></div>
-            <div class="col-2 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">Tool Name</div>
-            <div class="col-2 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">Findability</div>
-            <div class="col-2 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">Accessibility</div>
-            <div class="col-2 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">Interoperability</div>
-            <div class="col-2 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">Reusability</div>
+            <div class="col-2 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">Tool
+                Name
+            </div>
+            <div class="col-2 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">
+                Findability
+            </div>
+            <div class="col-2 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">
+                Accessibility
+            </div>
+            <div class="col-2 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">
+                Interoperability
+            </div>
+            <div class="col-2 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">
+                Reusability
+            </div>
             <div class="col-1"></div>
         </div>
-            {% for tool in private %}
+        {% for tool in tools %}
             <div class="row border border-secondary border-top-0 ">
-                <div class="col-1 border-right mt-1 mb-1"><img src="{% static 'imgs/' %}private.png" width=40 height=40></div>
-                <div class="col-2 border-right mt-1 mb-1" style="padding-top:7px;"><a href="private/{{tool.id}}">{{tool.tool_name}}</a></div>
-                <div class="col-2 border-right mt-1 mb-1" score="0" id="findability">0%</div>
-                <div class="col-2 border-right mt-1 mb-1" score="0" id="accessibility">0%</div>
-                <div class="col-2 border-right mt-1 mb-1" score="0" id="interoperability">0%</div>
-                <div class="col-2 border-right mt-1 mb-1" score="0" id="reusability">0%</div>
-                <div class="col-1 mt-1 mb-1"><a href="add/{{tool.id}}">Add to Pipeline</a></div>
+                <div class="col-1 border-right mt-1 mb-1"><img
+                        src="{% static 'imgs/' %}{{ tool.tool.tool_name | lower }}.png" width=40 height=40></div>
+                <div class="col-2 border-right mt-1 mb-1" style="padding-top:7px;"><a
+                        href="details/{{ tool.tool_id }}">{{ tool.tool.tool_name }}</a></div>
+                <div class="col-2 border-right score mt-1 mb-1" score="{{ tool.findability }}"
+                     id="findability">{{ tool.findability }}%
+                </div>
+                <div class="col-2 border-right score mt-1 mb-1" score="{{ tool.accessibility }}"
+                     id="accessibility">{{ tool.accessibility }}%
+                </div>
+                <div class="col-2 border-right score mt-1 mb-1" score="{{ tool.interoperability }}"
+                     id="interoperability">{{ tool.interoperability }}%
+                </div>
+                <div class="col-2 border-right score mt-1 mb-1" score="{{ tool.reusability }}"
+                     id="reusability">{{ tool.reusability }}%
+                </div>
+                <div class="col-1 mt-1 mb-1"><a href="add/{{ tool.tool_id }}">Add to Pipeline</a></div>
             </div>
-            {% endfor %}
-        {% else %}
-            <div class="row border"> <div class="col mt-1 mb-1">You do not have any private tools.</div></div>
-        {% endif %}
-        <a href="">Add private tool</a>
-        <br>
-    <br>
-    <h3 class="float-left">Public Tools</h3><a class="float-right mt-4" href="/portal/add">Add tool</a>
-    <br/><br/>
-    
-    {% else %}
-    <h3 class="floar-left">Tools</h3><a class="float-right mt-4" href="">Add tool</a><br/><br/>
-    {% endif %}
-    
-    <div class="row border border-primary">
-        <div class="col-1 border-right border-primary"></div>
-        <div class="col-2 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">Tool Name</div>
-        <div class="col-2 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">Findability</div>
-        <div class="col-2 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">Accessibility</div>
-        <div class="col-2 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">Interoperability</div>
-        <div class="col-2 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">Reusability</div>
-        <div class="col-1"></div>
+        {% endfor %}
+        <br/>
     </div>
-    {% for tool in tools %}
-    <div class="row border border-secondary border-top-0 ">
-        <div class="col-1 border-right mt-1 mb-1"><img src="{% static 'imgs/' %}{{tool.tool.tool_name | lower}}.png" width=40 height=40></div>
-        <div class="col-2 border-right mt-1 mb-1" style="padding-top:7px;"><a href="details/{{tool.tool_id}}">{{tool.tool.tool_name}}</a></div>
-        <div class="col-2 border-right score mt-1 mb-1" score="{{tool.findability}}" id="findability">{{tool.findability}}%</div>
-        <div class="col-2 border-right score mt-1 mb-1" score="{{tool.accessibility}}" id="accessibility">{{tool.accessibility}}%</div>
-        <div class="col-2 border-right score mt-1 mb-1" score="{{tool.interoperability}}" id="interoperability">{{tool.interoperability}}%</div>
-        <div class="col-2 border-right score mt-1 mb-1" score="{{tool.reusability}}" id="reusability">{{tool.reusability}}%</div>
-        <div class="col-1 mt-1 mb-1"><a href="add/{{tool.tool_id}}">Add to Pipeline</a></div>
-    </div>
-    {% endfor %}
-    <br/>
-</div>
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-<script>
-    $('.score').each(function(){
-        var value = $(this).attr('score');
-        console.log(value);
-        var hue=((0+(value/100))*120).toString(10);
-        this.style.backgroundColor = ["hsl(",hue,",100%,50%)"].join("");
-    });
-    
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script>
+        $('.score').each(function () {
+            var value = $(this).attr('score');
+            console.log(value);
+            var hue = ((0 + (value / 100)) * 120).toString(10);
+            this.style.backgroundColor = ["hsl(", hue, ",100%,50%)"].join("");
+        });
+
     </script>
 
 {% endblock %}

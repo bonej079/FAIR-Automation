@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
     ]
 
     query1 = "INSERT INTO socialaccount_socialapp(provider, name, client_id, secret) VALUES('google', 'Google API', '980985605567-923h1r4o8vhmv66prvh3h0lsv4phlkgv.apps.googleusercontent.com', 'XQRAoOhJ3jncptg2ZoJTYCX5')"
-    query2 = "INSERT INTO socialaccount_socialapp_sites(socialapp_id, site_id) VALUES ((SELECT id FROM socialaccount_socialapp WHERE provider = 'google'), 1)"
+    query2 = "INSERT INTO socialaccount_socialapp_sites(socialapp_id, site_id) VALUES ((SELECT id FROM socialaccount_socialapp WHERE provider = 'google' LIMIT 1), 1)"
 
     operations = [
         migrations.AlterField(

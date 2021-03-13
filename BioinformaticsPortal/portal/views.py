@@ -1,13 +1,11 @@
 from django.shortcuts import render, redirect
 from portal.models import FairScore, Tool, Findability, Accessibility, Interoperability, Reusability, Pipeline, PipelineTools
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 import yaml
-from django.contrib.staticfiles.storage import staticfiles_storage
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from googleapiclient.discovery import build
 from selenium import webdriver
-from crossref.restful import Works, Journals
-import requests
+from crossref.restful import Works
 
 def index(request):
     return render(request, 'portal/index.html', {
@@ -66,6 +64,9 @@ def tools(request):
 def details(request, id):
 
     if request.POST:
+        if not request.user.is_authenticated or not request.user.has_perm('portal.change_tool'):
+            raise PermissionDenied
+
         print(request.POST)
         if request.POST['scope'] == 'findability':
             upFind = Findability.objects.get(tool_id=id)
@@ -381,6 +382,8 @@ def privateDetails(request, id):
         }
         return render(request, 'portal/tools/private.html', context)
 
+@login_required(login_url='/accounts/login/')
+@permission_required('change_tool', raise_exception=True)
 def refineFindability(request, id):
     tool = FairScore.objects.select_related('tool').get(tool_id=id)
     findability = Findability.objects.get(tool_id=id)
@@ -391,6 +394,8 @@ def refineFindability(request, id):
     }
     return render(request, 'portal/refine/findability.html', context)
 
+@login_required(login_url='/accounts/login/')
+@permission_required('change_tool', raise_exception=True)
 def refineAccessibility(request, id):
     tool = FairScore.objects.select_related('tool').get(tool_id=id)
     accessibility = Accessibility.objects.get(tool_id=id)
@@ -401,6 +406,8 @@ def refineAccessibility(request, id):
     }
     return render(request, 'portal/refine/accessibility.html', context)
 
+@login_required(login_url='/accounts/login/')
+@permission_required('change_tool', raise_exception=True)
 def refineInteroperability(request, id):
     tool = FairScore.objects.select_related('tool').get(tool_id=id)
     interoperability = Interoperability.objects.get(tool_id=id)
@@ -411,6 +418,8 @@ def refineInteroperability(request, id):
     }
     return render(request, 'portal/refine/interoperability.html', context)
 
+@login_required(login_url='/accounts/login/')
+@permission_required('change_tool', raise_exception=True)
 def refineReusability(request, id):
     tool = FairScore.objects.select_related('tool').get(tool_id=id)
     reusability = Reusability.objects.get(tool_id=id)
@@ -421,6 +430,8 @@ def refineReusability(request, id):
     }
     return render(request, 'portal/refine/reusability.html', context)
 
+@login_required(login_url='/accounts/login/')
+@permission_required('change_tool', raise_exception=True)
 def addTool(request):
     if request.POST:
         print(request.POST)
