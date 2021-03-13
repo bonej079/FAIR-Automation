@@ -2,7 +2,7 @@
 {% load account %}
 {% load socialaccount %}
 
-Hi {% user_display user as user_display %}!
+Hi {% user_display user %}!
 
 {% block content %}{% endblock %}
 

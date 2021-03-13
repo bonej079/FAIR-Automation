@@ -179,12 +179,18 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-ACCOUNT_USER_DISPLAY = lambda user: user.username if user.first_name is '' and user.last_name is '' else user.get_full_name()
 ACCOUNT_EMAIL_SUBJECT_PREFIX = '[AutoFAIR] '
+ACCOUNT_USER_DISPLAY = lambda user: user.get_full_name()
+
+#Turns off email verification for social accounts only since google accounts would already be email verified
+#Might need to turn off if we implement other social account providers later such as Facebook which might not have a verified email
+SOCIALACCOUNT_EMAIL_VERIFICATION = False
 
 #Email SMTP Setup
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
@@ -195,3 +201,6 @@ EMAIL_HOST_USER = "autofairbioinfp@gmail.com"
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = "etdqpfyrmoiolhmk"
 
+ACCOUNT_FORMS = {
+    'signup': 'users.forms.PortalUserCreationForm'
+}
