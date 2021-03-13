@@ -4,17 +4,42 @@
 
 {% block title %}Sign Up{% endblock %}
 
-{% block container_content %}
-    <h1>{% trans "Sign Up" %}</h1>
+{% block content %}
+    <div class="container">
+        <h1>{% trans "Sign Up" %}</h1>
+    </div>
 
-    <form class="auth-form d-flex flex-column" id="signup_form" method="post" action="{% url 'account_signup' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        {% if redirect_field_value %}
-            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-        {% endif %}
-        <button class="form-button btn btn-primary" type="submit">{% trans "Sign Up" %}</button>
+    <div class="d-flex flex-column align-items-center">
+        <div class="d-flex flex-column align-items-center w-100">
 
-        <p>{% blocktrans %}Already have an account? <a href="{{ login_url }}">Sign In</a>.{% endblocktrans %}</p>
-    </form>
+            {% if form.non_field_errors %}
+                <div class="error-spacing">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <form class="d-flex flex-column align-items-center col-md-3" id="signup_form" method="post" action="{% url 'account_signup' %}">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="auth-field">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {{ field.errors }}
+
+                        {% if field.help_text %}
+                            <p class="help">{{ field.help_text|safe }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                {% endif %}
+                <button class="form-button btn btn-primary" type="submit">{% trans "Sign Up" %}</button>
+
+                <p>{% blocktrans %}Already have an account? <a href="{{ login_url }}">Sign In</a>.{% endblocktrans %}</p>
+            </form>
+        </div>
+    </div>
 {% endblock %}
