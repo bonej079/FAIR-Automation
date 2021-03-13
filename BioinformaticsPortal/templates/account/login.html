@@ -5,32 +5,78 @@
 
 {% block title %}{% trans "Sign In" %}{% endblock %}
 
-{% block container_content %}
-    <h1>{% trans "Sign In" %}</h1>
-
-    {% get_providers as socialaccount_providers %}
-
-    <div class="socialaccount_ballot">
-        <div class="socialaccount_providers">
-            {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-        </div>
+{% block content %}
+    <div class="container">
+        <h1>{% trans "Sign In" %}</h1>
     </div>
 
-    {% include "socialaccount/snippets/login_extra.html" %}
+    <div class="d-flex flex-column align-items-center">
 
-    <span class="or-text">OR</span>
+        {% get_providers as socialaccount_providers %}
 
-    <form class="auth-form d-flex flex-column" method="POST" action="{% url 'account_login' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        {% if redirect_field_value %}
-            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-        {% endif %}
-        <button class="form-button btn btn-primary" type="submit">{% trans "Sign In" %}</button>
-        <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-        <div>
-            <span>Don't have an account?</span>
-            <a href="{{ signup_url }}">Sign Up</a>
+        <div class="d-flex flex-column align-items-center w-100">
+            <div class="socialaccount_ballot">
+                <div class="socialaccount_providers">
+                    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+                </div>
+            </div>
+
+            {% include "socialaccount/snippets/login_extra.html" %}
+
+            <div class="or-container d-flex flex-row justify-content-center">
+                <span class="or-text">OR</span>
+            </div>
+
+            {% if form.non_field_errors %}
+                <div class="error-spacing">
+                    {{ form.non_field_errors }}
+                </div>
+            {% else %}
+                <div class="no-error-spacing"></div>
+            {% endif %}
+
+            <form class="d-flex flex-column align-items-center col-md-3" method="POST"
+                  action="{% url 'account_login' %}">
+                {% csrf_token %}
+
+                <div class="auth-field">
+                    {{ form.login.label_tag }}
+                    {{ form.login }}
+                    {{ form.login.errors }}
+                    {% if form.login.help_text %}
+                        <p class="help">{{ form.login.help_text|safe }}</p>
+                    {% endif %}
+                </div>
+
+                <div class="auth-field login-password">
+                    {{ form.password.label_tag }}
+                    {{ form.password }}
+                    {{ form.password.errors }}
+                    {% if form.password.help_text %}
+                        <p class="help">{{ form.password.help_text|safe }}</p>
+                    {% endif %}
+
+                    <span>
+                        {{ form.remember.label_tag }}
+                        {{ form.remember }}
+                        {{ form.remember.errors }}
+                        {% if form.remember.help_text %}
+                            <p class="help">{{ form.remember.help_text|safe }}</p>
+                        {% endif %}
+                    </span>
+                </div>
+
+                {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                {% endif %}
+                <button class="form-button btn btn-primary" type="submit">{% trans "Sign In" %}</button>
+                <a class="button secondaryAction"
+                   href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+                <div>
+                    <span>Don't have an account?</span>
+                    <a href="{{ signup_url }}">Sign Up</a>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 {% endblock %}

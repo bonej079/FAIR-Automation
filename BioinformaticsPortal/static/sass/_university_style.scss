@@ -11,5 +11,4 @@ $link-hover-color: darken(map-get($theme-colors, "primary"), 15%);
 $navbar-light-hover-color: rgba($primary, .7);
 $navbar-light-active-color: rgba($primary, .9);
 
-
 @import "../libs/bootstrap/scss/bootstrap";
