@@ -3,131 +3,149 @@
 {% load static %}
 
 {% block content %}
-<div class="container">
-    <h1>{{tools.0.pipeline.name}}</h1>
-    <form action="/portal/pipelines/" method="POST">{% csrf_token %}
-        <input type="hidden" value={{tools.0.pipeline.id}} name="pipeline_id">
-    {% for tool in tools %}
-    <div class="btn-group">
-        <a class="dropdown" data-toggle="dropdown"><button type="button" class="dropdown-toggle btn btn-outline-primary rounded-0">{{tool.tool}}</button></a> ->
-        <div class="dropdown-menu" >
-                {% if tool.tool.isPrivate is False %}
-                    <a class="col btn btn-outline-primary rounded-0 border-0" href="/portal/tools/details/{{tool.tool.id}}">View Details</a>
-                {% else %}
-                    <a class="col btn btn-outline-primary rounded-0 border-0" href="/portal/tools/private/{{tool.tool.id}}">View Details</a>
-                {% endif %}
-                <a class="col btn btn-outline-primary rounded-0 border-0" href="/portal/tools/details/{{tool.tool.id}}">Add tool before</a>
-                <a class="col btn btn-outline-primary rounded-0 border-0" href="/portal/tools/details/{{tool.tool.id}}">Add tool after</a>
-                <a class="col btn btn-outline-primary rounded-0 border-0" href="/portal/tools/details/{{tool.tool.id}}">Add dataset before</a>
-                <a class="col btn btn-outline-primary rounded-0 border-0" href="/portal/tools/details/{{tool.tool.id}}">Add dataset after</a>
-                <input class="btn btn-outline-primary rounded-0 border-0" type="submit" name="{{tool.tool.id}}" value="Remove from pipeline">
+    <div class="container">
+        <h1>{{ tools.0.pipeline.name }}</h1>
+        <form action="/portal/pipelines/" method="POST">{% csrf_token %}
+            <input type="hidden" value={{ tools.0.pipeline.id }} name="pipeline_id">
+            {% for tool in tools %}
+                <div class="btn-group">
+                    <a class="dropdown" data-toggle="dropdown">
+                        <button type="button"
+                                class="dropdown-toggle btn btn-outline-primary rounded-0">{{ tool.tool }}</button>
+                    </a> ->
+                    <div class="dropdown-menu">
+                        {% if tool.tool.isPrivate is False %}
+                            <a class="col btn btn-outline-primary rounded-0 border-0"
+                               href="/portal/tools/details/{{ tool.tool.id }}">View Details</a>
+                        {% else %}
+                            <a class="col btn btn-outline-primary rounded-0 border-0"
+                               href="/portal/tools/private/{{ tool.tool.id }}">View Details</a>
+                        {% endif %}
+                        <a class="col btn btn-outline-primary rounded-0 border-0"
+                           href="/portal/tools/details/{{ tool.tool.id }}">Add tool before</a>
+                        <a class="col btn btn-outline-primary rounded-0 border-0"
+                           href="/portal/tools/details/{{ tool.tool.id }}">Add tool after</a>
+                        <a class="col btn btn-outline-primary rounded-0 border-0"
+                           href="/portal/tools/details/{{ tool.tool.id }}">Add dataset before</a>
+                        <a class="col btn btn-outline-primary rounded-0 border-0"
+                           href="/portal/tools/details/{{ tool.tool.id }}">Add dataset after</a>
+
+                        {% if user.is_authenticated and perms.portal.delete_pipeline and pipeline.owner_id == user.id %}
+                        <input class="btn btn-outline-primary rounded-0 border-0" type="submit"
+                               name="{{ tool.tool.id }}" value="Remove from pipeline">
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+            Output
+        </form>
+        <br/>
+        <div class="row border border-primary">
+            <div class="col-11 border-primary border-right mt-1 mb-1">
+                <h4>Findability</h4>
+            </div>
+            <div class="score col-1 mt-1 mb-1 text-center"
+                 score={{ pipeline.findability }} style="padding-right:2px;padding-left:2px">
+                {{ pipeline.findability }}%
             </div>
         </div>
-    {% endfor %}
-    Output
+        {% for tool in scores %}
+            <div class="row border">
+                <div class="col-11 border-right mt-2 mb-2">
+                    <a href="/portal/tools/details/{{ tool.tool_id }}">{{ tool.tool.tool_name }}</a>
+                </div>
+                <div class="score col-1 mt-1 mb-1 text-center"
+                     score={{ tool.findability }} style="padding-right:2px;padding-left:2px">
+                    {{ tool.findability }}%
+                </div>
+            </div>
+        {% endfor %}
 
-    
+        <br/>
+        <div class="row border border-primary">
+            <div class="col-11 border-primary border-right mt-1 mb-1">
+                <h4>Accessibility</h4>
+            </div>
+            <div class="score col-1 mt-1 mb-1 text-center"
+                 score={{ pipeline.accessibility }} style="padding-right:2px;padding-left:2px">
+                {{ pipeline.accessibility }}%
+            </div>
+        </div>
+        {% for tool in scores %}
+            <div class="row border">
+                <div class="col-11 border-right mt-2 mb-2">
+                    <a href="/portal/tools/details/{{ tool.tool_id }}">{{ tool.tool.tool_name }}</a>
+                </div>
+                <div class="score col-1 mt-1 mb-1 text-center"
+                     score={{ tool.accessibility }} style="padding-right:2px;padding-left:2px">
+                    {{ tool.accessibility }}%
+                </div>
+            </div>
+        {% endfor %}
 
-    </form>
-    <br/>
-    <div class="row border border-primary">
-        <div class="col-11 border-primary border-right mt-1 mb-1"> 
-            <h4>Findability</h4>
+        <br/>
+        <div class="row border border-primary">
+            <div class="col-11 border-primary border-right mt-1 mb-1">
+                <h4>Interoperability</h4>
+            </div>
+            <div class="score col-1 mt-1 mb-1 text-center"
+                 score={{ pipeline.interoperability }} style="padding-right:2px;padding-left:2px">
+                {{ pipeline.interoperability }}%
+            </div>
         </div>
-        <div class="score col-1 mt-1 mb-1 text-center" score={{pipeline.findability}} style="padding-right:2px;padding-left:2px">
-            {{pipeline.findability}}%
+        {% for tool in scores %}
+            <div class="row border">
+                <div class="col-11 border-right mt-2 mb-2">
+                    <a href="/portal/tools/details/{{ tool.tool_id }}">{{ tool.tool.tool_name }}</a>
+                </div>
+                <div class="score col-1 mt-1 mb-1 text-center"
+                     score={{ tool.interoperability }} style="padding-right:2px;padding-left:2px">
+                    {{ tool.interoperability }}%
+                </div>
+            </div>
+        {% endfor %}
+
+        <br/>
+        <div class="row border border-primary">
+            <div class="col-11 border-primary border-right mt-1 mb-1">
+                <h4>Reusability</h4>
+            </div>
+            <div class="score col-1 mt-1 mb-1 text-center"
+                 score={{ pipeline.reusability }} style="padding-right:2px;padding-left:2px">
+                {{ pipeline.reusability }}%
+            </div>
         </div>
+        {% for tool in scores %}
+            <div class="row border">
+                <div class="col-11 border-right mt-2 mb-2">
+                    <a href="/portal/tools/details/{{ tool.tool_id }}">{{ tool.tool.tool_name }}</a>
+                </div>
+                <div class="score col-1 mt-1 mb-1 text-center"
+                     score={{ tool.reusability }} style="padding-right:2px;padding-left:2px">
+                    {{ tool.reusability }}%
+                </div>
+            </div>
+        {% endfor %}
+
+        <br/><br/>
     </div>
-    {% for tool in scores %}
-        <div class="row border">
-            <div class="col-11 border-right mt-2 mb-2"> 
-                <a href="/portal/tools/details/{{tool.tool_id}}">{{tool.tool.tool_name}}</a>
-            </div>
-            <div class="score col-1 mt-1 mb-1 text-center" score={{tool.findability}} style="padding-right:2px;padding-left:2px">
-                {{tool.findability}}%
-            </div>
-        </div>
-    {% endfor %}
 
-    <br/>
-    <div class="row border border-primary">
-        <div class="col-11 border-primary border-right mt-1 mb-1"> 
-            <h4>Accessibility</h4>
-        </div>
-        <div class="score col-1 mt-1 mb-1 text-center" score={{pipeline.accessibility}} style="padding-right:2px;padding-left:2px">
-            {{pipeline.accessibility}}%
-        </div>
-    </div>
-    {% for tool in scores %}
-        <div class="row border">
-            <div class="col-11 border-right mt-2 mb-2"> 
-                <a href="/portal/tools/details/{{tool.tool_id}}">{{tool.tool.tool_name}}</a>
-            </div>
-            <div class="score col-1 mt-1 mb-1 text-center" score={{tool.accessibility}} style="padding-right:2px;padding-left:2px">
-                {{tool.accessibility}}%
-            </div>
-        </div>
-    {% endfor %}
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script>
+        $('div.btn-group a.dropdown').hover(function () {
+            $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+        }, function () {
+            $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+        });
+    </script>
+    <script>
+        $('.score').each(function () {
+            var value = $(this).attr('score');
+            console.log(value);
+            var hue = ((0 + (value / 100)) * 120).toString(10);
+            this.style.backgroundColor = ["hsl(", hue, ",100%,50%)"].join("");
+        });
 
-    <br/>
-    <div class="row border border-primary">
-        <div class="col-11 border-primary border-right mt-1 mb-1"> 
-            <h4>Interoperability</h4>
-        </div>
-        <div class="score col-1 mt-1 mb-1 text-center" score={{pipeline.interoperability}} style="padding-right:2px;padding-left:2px">
-            {{pipeline.interoperability}}%
-        </div>
-    </div>
-    {% for tool in scores %}
-        <div class="row border">
-            <div class="col-11 border-right mt-2 mb-2"> 
-                <a href="/portal/tools/details/{{tool.tool_id}}">{{tool.tool.tool_name}}</a>
-            </div>
-            <div class="score col-1 mt-1 mb-1 text-center" score={{tool.interoperability}} style="padding-right:2px;padding-left:2px">
-                {{tool.interoperability}}%
-            </div>
-        </div>
-    {% endfor %}
-
-    <br/>
-    <div class="row border border-primary">
-        <div class="col-11 border-primary border-right mt-1 mb-1"> 
-            <h4>Reusability</h4>
-        </div>
-        <div class="score col-1 mt-1 mb-1 text-center" score={{pipeline.reusability}} style="padding-right:2px;padding-left:2px">
-            {{pipeline.reusability}}%
-        </div>
-    </div>
-    {% for tool in scores %}
-        <div class="row border">
-            <div class="col-11 border-right mt-2 mb-2"> 
-                <a href="/portal/tools/details/{{tool.tool_id}}">{{tool.tool.tool_name}}</a>
-            </div>
-            <div class="score col-1 mt-1 mb-1 text-center" score={{tool.reusability}} style="padding-right:2px;padding-left:2px">
-                {{tool.reusability}}%
-            </div>
-        </div>
-    {% endfor %}
-
-    <br/><br/>
-</div>
-
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-<script>
-    $('div.btn-group a.dropdown').hover(function() {
-  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
-}, function() {
-  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
-});
-</script>
-<script>
-    $('.score').each(function(){
-        var value = $(this).attr('score');
-        console.log(value);
-        var hue=((0+(value/100))*120).toString(10);
-        this.style.backgroundColor = ["hsl(",hue,",100%,50%)"].join("");
-    });
-    
     </script>
 
 {% endblock %}

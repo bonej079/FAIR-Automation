@@ -37,7 +37,10 @@
                         <div class="col-2 border-right mt-1 mb-1" score="0" id="accessibility">0%</div>
                         <div class="col-2 border-right mt-1 mb-1" score="0" id="interoperability">0%</div>
                         <div class="col-2 border-right mt-1 mb-1" score="0" id="reusability">0%</div>
-                        <div class="col-1 mt-1 mb-1"><a href="add/{{ tool.id }}">Add to Pipeline</a></div>
+
+                        {% if perms.portal.change_pipeline %}
+                            <div class="col-1 mt-1 mb-1"><a href="add/{{ tool.id }}">Add to Pipeline</a></div>
+                        {% endif %}
                     </div>
                 {% endfor %}
             {% else %}
@@ -93,7 +96,10 @@
                 <div class="col-2 border-right score mt-1 mb-1" score="{{ tool.reusability }}"
                      id="reusability">{{ tool.reusability }}%
                 </div>
-                <div class="col-1 mt-1 mb-1"><a href="add/{{ tool.tool_id }}">Add to Pipeline</a></div>
+
+                {% if user.is_authenticated and perms.portal.change_pipeline %}
+                    <div class="col-1 mt-1 mb-1"><a href="add/{{ tool.tool_id }}">Add to Pipeline</a></div>
+                {% endif %}
             </div>
         {% endfor %}
         <br/>

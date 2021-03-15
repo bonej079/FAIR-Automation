@@ -4,7 +4,6 @@
 
 {% block content %}
 <div class="container">
-    <h4>Hi {{user.username}}, these are your current pipelines: </h4>
     <div class="row border border-primary">
             <div class="col-4 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">Pipeline Name</div>
             <div class="col-2 border-right border-primary text-center" style="padding-bottom:3px; padding-top:2px;">Findability</div>
@@ -41,7 +40,10 @@
             
         </div>
     {% endfor %}
-    <a href="/portal/pipelines/create">Create new pipeline</a>
+
+    {% if user.is_authenticated and perms.portal.add_pipeline %}
+        <a href="/portal/pipelines/create">Create new pipeline</a>
+    {% endif %}
 </div>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script>

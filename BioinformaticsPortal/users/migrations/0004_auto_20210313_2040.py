@@ -21,6 +21,7 @@ def add_permissions(apps, schema_editor):
         add_permission(apps, group, 'add_pipeline')
         add_permission(apps, group, 'change_pipeline')
         add_permission(apps, group, 'view_pipeline')
+        add_permission(apps, group, 'delete_pipeline')
 
 class Migration(migrations.Migration):
 

@@ -19,6 +19,14 @@ def tools(request):
     if request.method == "POST":
         pipeline_id = list(request.POST.keys())[2]
         tool_id = request.POST['tool_id']
+
+        pipeline = Pipeline.objects.get(id=pipeline_id)
+
+        user = request.user
+
+        if not user.is_authenticated or not user.has_perm('portal.change_pipeline') or not pipeline.owner_id == user.id:
+            raise PermissionDenied
+
         pipelineTool = PipelineTools.objects.create(pipeline_id = pipeline_id, tool_id = tool_id) 
 
         pipeline_tools = PipelineTools.objects.select_related('tool').filter(pipeline_id = pipeline_id)
@@ -46,18 +54,12 @@ def tools(request):
 
     tools = FairScore.objects.select_related('tool').filter(tool__isPrivate=False)
     
-    if request.user.is_authenticated:
-        private = Tool.objects.filter(isPrivate=True, owner_id=request.user.id).all()
-        context = {
-            'view_name': 'Tools',
-            'tools': tools,
-            'private': private
-        }
-    else:
-        context = {
-            'view_name': 'Tools',
-            'tools': tools
-        }
+    private = Tool.objects.filter(isPrivate=True, owner_id=request.user.id).all()
+    context = {
+        'view_name': 'Tools',
+        'tools': tools,
+        'private': private
+    }
 
     return render(request, 'portal/tools.html', context)
 
@@ -290,6 +292,8 @@ def details(request, id):
     }
     return render(request, 'portal/tools/details.html', context)
 
+@login_required(login_url='/accounts/login/')
+@permission_required('portal.change_pipeline', raise_exception=True)
 def add(request, id):
     pipelines = Pipeline.objects.filter(owner_id = request.user.id)
     tool = Tool.objects.get(id=id)
@@ -301,13 +305,19 @@ def add(request, id):
     }
     return render(request, 'portal/tools/add.html', context)
 
-@login_required(login_url='/accounts/login/')
 def pipelines(request):
     
     if request.POST:
         tool_id = list(request.POST.keys())[2]
         pipeline_id = request.POST['pipeline_id']
-        pipelineTool = PipelineTools.objects.get(pipeline_id=pipeline_id, tool_id=tool_id).delete() 
+
+        pipeline = Pipeline.objects.get(id=pipeline_id)
+        user = request.user
+
+        if not user.is_authenticated or not user.has_perm("portal.delete_pipeline") or not pipeline.owner_id == user.id:
+            raise PermissionDenied
+
+        pipelineTool = PipelineTools.objects.get(pipeline_id=pipeline_id, tool_id=tool_id).delete()
 
         pipeline_tools = PipelineTools.objects.select_related('tool').filter(pipeline_id = pipeline_id)
         f = 0
@@ -332,14 +342,13 @@ def pipelines(request):
         pipeline.reusability = r
         pipeline.save()
 
-    pipelines = Pipeline.objects.filter(owner_id = request.user.id)
+    pipelines = Pipeline.objects.all()
     context = {
         'view_name': 'Pipelines',
         'pipelines': pipelines
     }
     return render(request, 'portal/pipelines.html', context)
 
-@login_required(login_url='/accounts/login/')
 def pipelineDetails(request, id):
     pipeline = Pipeline.objects.get(id=id)
     tools = PipelineTools.objects.select_related('tool', 'pipeline').filter(pipeline_id = id).order_by('position')
@@ -347,9 +356,7 @@ def pipelineDetails(request, id):
     for tool in tools:
         t = FairScore.objects.select_related('tool').get(tool_id=tool.tool_id)
         toolScores.append(t)
-    if request.user.id is not pipeline.owner_id:
-        return redirect('pipelines')
-    
+
     context = {
         'view_name': 'Pipeline Details',
         'tools': tools,
@@ -358,6 +365,8 @@ def pipelineDetails(request, id):
     }
     return render(request, 'portal/pipelines/details.html', context)
 
+@login_required(login_url='/accounts/login/')
+@permission_required('portal.add_pipeline', raise_exception=True)
 def createPipeline(request):
     if request.POST:
         pipeline_name=request.POST['name']
