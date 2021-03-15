@@ -6,7 +6,7 @@
 <div class="container">
   {% if user.is_authenticated %}
     Hi {% user_display user %}!
-    <form method="post" style="display: inline-block" action="{% url 'account_logout' %}">
+    <form method="post" action="{% url 'account_logout' %}">
       {% csrf_token %}
       {% if redirect_field_value %}
           <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
@@ -17,8 +17,8 @@
   {% else %}
     <p>You are not logged in</p>
     <a href="{% url 'account_signup' %}">Sign Up</a></p>
-    <p><a href="{% url 'account_login' %}">Log In </a></p>
-    <p><a href="{% provider_login_url 'google' %}">Log In with Gmail</a></p>
+    <p><a href="{% url 'account_login' %}">Sign In </a></p>
+    <p><a href="{% provider_login_url 'google' %}">Sign In with Gmail</a></p>
   {% endif %}
 </div>
 {% endblock %}
