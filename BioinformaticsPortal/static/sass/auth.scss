@@ -84,3 +84,18 @@
 .auth-form {
   max-width: 500px;
 }
+
+button.logout {
+  border:none;
+  color: #ba0c2f;
+  display: inline-block;
+  background-color: transparent;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+}
+
+button.logout:focus, button.logout:hover {
+  text-decoration: underline;
+  color: #72071d;
+}
